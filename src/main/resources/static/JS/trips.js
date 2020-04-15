@@ -1,6 +1,6 @@
 var stop_trip_id, stop_boat_No, stop_type, stopped_guest, start_time;
 $(document).ready(function () {
-  // getAllOngoingTrips();
+  getAllOngoingTrips();
   $('#checkbtn').on('click', function (e) {
     if ($('#noOfPersons').val() === '') {
       myAlert('Please Enter a number of persons', 'error');
@@ -38,9 +38,16 @@ $(document).ready(function () {
     $('#stopTripModel').hide();
   });
   $('#stopbtn').on('click', function (e) {
-    // first, check if the boat is electrical
+    // first, stop a boat
     stopTrip();
     $('#stopTripModel').hide();
+    // get duration and price of the trip
+  });
+  $('#GuestcloseError').on('click', function () {
+    $('#guestDataModel').hide();
+  });
+  $('#GuestModelcloseOK').on('click', function () {
+    $('#guestDataModel').hide();
   });
 });
 
@@ -91,17 +98,17 @@ function addGuest() {
 }
 // add trip function
 function addTrip(guest_id) {
-  var boatid;
+  var boat;
   $.get('api/boats/boat/' + $('#Boats').val(), function (myboat) {
-    boatid = myboat.id;
-    console.log(boatid);
+    boat = myboat;
+    console.log(boat);
     var trip = {
       status: 'ongoing',
       guest: {
         id: guest_id,
       },
       boats: {
-        id: boatid,
+        id: boat.id,
       },
     };
     console.log(trip);
@@ -115,13 +122,14 @@ function addTrip(guest_id) {
         // linkBoatsWithTrip(mytrip.id, myboats);
         getAllOngoingTrips();
         myAlert('A trip starts!', 'success');
+        clearAllfields();
+        updateBoat(boat);
       },
       error: function () {
         myAlert('Invalid Input', 'error');
       },
     });
   });
-  //   console.log('Boat ID is' + boatid);
 }
 // get a guest function
 function getAguest(name) {
@@ -130,6 +138,68 @@ function getAguest(name) {
   });
 }
 
+// update boat function
+
+function updateBoat(boat) {
+  var boat = {
+    id: boat.id,
+    no: boat.no,
+    noOfSeats: boat.noOfSeats,
+    minPrice: boat.minPrice,
+    type: boat.type,
+    available: false,
+    chargingTime: boat.chargingTime,
+    accPrice: boat.accPrice,
+  };
+
+  console.log('Type is' + boat.type.toString());
+  var jsonObject = JSON.stringify(boat);
+
+  $.ajax({
+    url: 'api/boats/' + boat.id,
+    type: 'PUT',
+    data: jsonObject,
+    contentType: 'application/json',
+    success: function () {
+      console.log('a boat has been updated');
+    },
+    error: function () {
+      console.log('Sorry, something went wrong!');
+    },
+  });
+}
+
+// get a boat by No
+function getDurationandPrice(trip) {
+  var str = '';
+  $.get('api/boats/boat/' + stop_boat_No, function (updatedboat) {
+    console.log(updatedboat);
+    str +=
+      'Guest Name:  ' +
+      stopped_guest.name +
+      '</br>' +
+      'Guest ID:  ' +
+      stopped_guest.idNo +
+      '</br>' +
+      'ID Type:  ' +
+      stopped_guest.idType +
+      '</br>' +
+      'Guest Phone:  ' +
+      stopped_guest.phone +
+      '</br>' +
+      'Trip Duration:  ' +
+      trip.duration +
+      ' hours ' +
+      '</b>' +
+      'Price:  ' +
+      updatedboat.income +
+      '</br>';
+    $('.modal-title').html('');
+    $('.modal-title').html('Guest Details ');
+    $('.modal-header').css('background-color', 'rosybrown');
+    $('#guestDatabody').append(str);
+  });
+}
 // function to stop a trip
 function stopTrip() {
   $.get('api/boats/boat/' + stop_boat_No, function (stopped_boat) {
@@ -162,8 +232,9 @@ function stopTrip() {
       type: 'PUT',
       contentType: 'application/json',
       data: jsonObject,
-      success: function () {
-        myAlert('A trip is ended!', 'success');
+      success: function (trip) {
+        getDurationandPrice(trip);
+        $('#guestDataModel').show();
         getAllOngoingTrips();
       },
       error: function () {
@@ -172,25 +243,14 @@ function stopTrip() {
     });
   });
 }
-// // link between boats and trip
-// function linkBoatsWithTrip(mytrip_id, myboats) {
-//   var jsonObject = JSON.stringify(myboats);
-//   console.log(jsonObject);
 
-//   $.ajax({
-//     url: 'api/boats/linkBoat/' + mytrip_id,
-//     type: 'PUT',
-//     data: jsonObject,
-//     contentType: 'application/json',
-//     success: function () {
-//       console.log('a link successfully built!');
-//     },
-//     error: function () {
-//       myAlert('Sorry, something went wrong!', 'error');
-//     },
-//   });
-// }
-
+// function to clear the text input
+function clearAllfields() {
+  $('#noOfPersons').val('');
+  $('#idNumer').val('');
+  $('#guestName').val('');
+  $('#phone').val('');
+}
 // function to retrieve all ongoing trips
 function getAllOngoingTrips() {
   $.get('api/trips/ongoing', function (ongoing) {

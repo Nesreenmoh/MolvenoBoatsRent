@@ -22,7 +22,7 @@ public class Boat {
     @Column(name = "NO_OF_SEATS")
     private Integer noOfSeats;
     @Column(name = "BOAT_TYPE")
-    private BoatType type;
+    private String type;
     @Column(name = "AVAILABILE")
     private Boolean available = true;
     @Column(name = "MAINTENANCE")
@@ -48,11 +48,11 @@ public class Boat {
     public Boat() {
     }
 
-    public Boat(String no, @NotNull Integer noOfSeats, BoatType type, Double minPrice, Double accPrice, Integer chargingTime) {
+    public Boat(String no, @NotNull Integer noOfSeats, String type, Double minPrice, Double accPrice, Integer chargingTime) {
         this.no = no;
         this.noOfSeats = noOfSeats;
-        this.type = type;
         this.minPrice = minPrice;
+        this.type=type;
         this.accPrice = accPrice;
         this.chargingTime = chargingTime;
     }
@@ -81,11 +81,11 @@ public class Boat {
         this.noOfSeats = noOfSeats;
     }
 
-    public BoatType getType() {
+    public String getType() {
         return type;
     }
 
-    public void setType(BoatType type) {
+    public void setType(String type) {
         this.type = type;
     }
 
@@ -134,7 +134,7 @@ public class Boat {
     }
 
     public void setTotalTime(Long totalTime) {
-        this.totalTime = totalTime;
+        this.totalTime += totalTime;
     }
 
     public Integer getChargingTime() {
@@ -176,10 +176,5 @@ public class Boat {
                 '}';
     }
 
-//    // a method which make a connection between a trip and a boat
-//    public void addTrip(Trip trip) {
-//        trip.getBoats().add(this);
-//        trips.add(trip);
-//
-//    }
+
 }

@@ -23,8 +23,7 @@ public class BoatService {
 
 
     // add boat
-    public void addBoat(Boat boat, BoatType checkedType) {
-        boat.setType(checkedType);
+    public void addBoat(Boat boat) {
         boatRepository.save(boat);
     }
 
@@ -42,6 +41,7 @@ public class BoatService {
 
     // retrieve all boats
     public List<Boat> getAllBoats() {
+
         return boatRepository.findAll();
     }
 
@@ -63,7 +63,7 @@ public class BoatService {
         List<Boat> foundBoats = new ArrayList<>();
         for (Boat boat : boatList) {
             if (boat.getAvailable()) {
-                if ((boat.getNoOfSeats() >= noOfPeople) && ((boat.getType()).toString()).equalsIgnoreCase((boatType))) {
+                if ((boat.getNoOfSeats() >= noOfPeople) && ((boat.getType())).equalsIgnoreCase((boatType))) {
                     foundBoats.add(boat);
                 }
             }
@@ -79,19 +79,16 @@ public class BoatService {
     }
 
     //  retrieve by boat type
-    public List<Boat> getBoatByType(BoatType boatType) {
-
+    public List<Boat> getBoatByType(String boatType) {
         return boatRepository.findAllByType(boatType);
     }
 
     // update a boat data
-    public void updateBoat(Boat boat, BoatType boatType) {
-        boat.setType(boatType);
+    public void updateBoat(Boat boat) {
         boatRepository.save(boat);
     }
 
-    public void updateBoatForMaintenance(Boat boat, BoatType boatType) {
-        boat.setType(boatType);
+    public void updateBoatForMaintenance(Boat boat) {
         boat.setMaintenance(true);
         boat.setAvailable(false);
         boatRepository.save(boat);

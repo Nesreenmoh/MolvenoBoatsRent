@@ -14,6 +14,8 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 @Service
 @Transactional
@@ -30,7 +32,6 @@ public class TripService {
     public void addTrip(Trip trip) {
         trip.setStartTime(LocalDateTime.now());
         tripRepository.save(trip);
-
     }
 
 
@@ -82,17 +83,27 @@ public class TripService {
 
 
     // update a trip
-    public void updateTrip(Trip trip) {
+    public Trip updateTrip(Trip trip) {
         // set the end time for a trip
+        Boolean state;
+         if(trip.getBoats().getType().equalsIgnoreCase("electrical")){
+             state= false;
+             updateElectricalBoat(trip.getBoats());
+         }
+         else {
+             state=true;
+         }
+        System.out.println("state is "+ state);
         trip.setEndTime(LocalDateTime.now());
         // calculate the duration of this trip
         long diff = calculateDuration(trip);
         trip.setDuration(diff);
-        trip.getBoats().setAvailable(true);
+        trip.getBoats().setAvailable(state);
         trip.getBoats().setIncome(diff  * trip.getBoats().getAccPrice());
         trip.getBoats().setTotalTime(diff);
         tripRepository.save(trip);
         boatRepository.save(trip.getBoats());
+        return trip;
     }
 
     // calculate duration between the start time of the trip and the end time
@@ -113,6 +124,25 @@ public class TripService {
         }
         return totalIncome;
 }
+
+// update electrical boat and set the availability after the charging time
+public void updateElectricalBoat(Boat boat){
+      int  chargingTime = boat.getChargingTime();
+    System.out.println(chargingTime);
+    // define a time to set a current time + charging time to change the availability to true
+    Timer myTimer = new Timer();
+
+    myTimer.schedule(new TimerTask() {
+        @Override
+        public void run() {
+            boat.setAvailable(true);
+            boatRepository.save(boat);
+            System.out.println("Hello guys");
+        }
+    }, (chargingTime *3600000) );
+}
+
+
 // retrieve used boats No for all trip
 //    public List<Boat> getUsedBoatsForAllTrip() {
 //        List<Trip> trips = tripRepository.findAll();

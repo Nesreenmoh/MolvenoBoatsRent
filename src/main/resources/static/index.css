@@ -124,7 +124,8 @@ p {
 }
 #blockmodel,
 #unblockmodel,
-#stopTripModel {
+#stopTripModel,
+#guestDataModel {
   display: none;
 }
 .guestData {

@@ -137,6 +137,7 @@ function postBoat() {
   var rowingboat = {
     no: $('#boatNo').val(),
     noOfSeats: $('#seats').val(),
+    type: $('#boatType').val(),
     minPrice: Number($('#minPrice').val()),
     chargingTime: Number($('#chargingTime').val()),
     accPrice: actual_price,
@@ -144,7 +145,7 @@ function postBoat() {
 
   var jsonObject = JSON.stringify(rowingboat);
   $.ajax({
-    url: 'api/boats/' + $('#boatType').val(),
+    url: 'api/boats/',
     type: 'POST',
     contentType: 'application/json',
     data: jsonObject,
@@ -171,6 +172,7 @@ function updateBoat(updated_boatId) {
     no: $('#editboatNo').val(),
     noOfSeats: $('#editseats').val(),
     minPrice: Number($('#editminPrice').val()),
+    type: $('#editboatType').val(),
     chargingTime: Number($('#editchargingTime').val()),
     accPrice: actual_price,
   };
@@ -178,7 +180,7 @@ function updateBoat(updated_boatId) {
   var jsonObject = JSON.stringify(boat);
 
   $.ajax({
-    url: 'api/boats/' + updated_boatId + '/' + $('#editboatType').val(),
+    url: 'api/boats/' + updated_boatId,
     type: 'PUT',
     data: jsonObject,
     contentType: 'application/json',
@@ -211,7 +213,7 @@ function blockBoat(boatno) {
       var jsonObject = JSON.stringify(boat);
 
       $.ajax({
-        url: 'api/boats/' + myboat.id + '/' + myboat.type,
+        url: 'api/boats/' + myboat.id,
         type: 'PUT',
         data: jsonObject,
         contentType: 'application/json',
@@ -248,7 +250,7 @@ function unblockBoat(blockedId) {
       var jsonObject = JSON.stringify(boat);
 
       $.ajax({
-        url: 'api/boats/' + myboat.id + '/' + myboat.type,
+        url: 'api/boats/' + myboat.id,
         type: 'PUT',
         data: jsonObject,
         contentType: 'application/json',

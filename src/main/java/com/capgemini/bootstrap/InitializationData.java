@@ -34,7 +34,7 @@ public class InitializationData implements CommandLineRunner {
         guestRepository.save(guest1);
 
 
-        Boat boat1 = new Boat("1234", 4, BoatType.ROWING, 100.0, 200.0, 0);
+        Boat boat1 = new Boat("1234", 4, "Electrical", 100.0, 200.0, 2);
         Trip trip = new Trip(LocalDateTime.of(2020,04,15, 5,1,45,36912), "ongoing");
         trip.setGuest(guest1);
         List<Trip> trip1 = new ArrayList<>();

@@ -58,7 +58,7 @@ public class TripController {
 
     // request to update a trip
     @PutMapping("/updatetrip/{id}")
-    public void stopTrip(@RequestBody Trip trip,@PathVariable Long id){
-        tripService.updateTrip(trip);
+    public Trip stopTrip(@RequestBody Trip trip,@PathVariable Long id){
+       return tripService.updateTrip(trip);
     }
 }

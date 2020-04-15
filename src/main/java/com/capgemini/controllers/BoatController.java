@@ -19,6 +19,7 @@ public class BoatController {
     // request to get all boats
     @GetMapping
     public List<Boat> findAllBoats() {
+
         return boatService.getAllBoats();
     }
 
@@ -46,29 +47,28 @@ public class BoatController {
     @GetMapping("/trips/{boatno}")
     public List<Trip> findAllTrips(@PathVariable String boatno)
     {
+
         return boatService.getTripsbyBoat(boatno);
     }
 
     // request to get all boats by type
     @GetMapping("/boattype/{boatType}")
     public List<Boat> findByBoatType(@PathVariable String boatType){
-        BoatType checkedType = BoatType.valueOf(boatType.toUpperCase());
-        return boatService.getBoatByType(checkedType);
+        return boatService.getBoatByType(boatType);
     }
 
     // request to add a boat
-    @PostMapping("/{boatType}")
-    public void addBoat(@RequestBody Boat boat, @PathVariable String boatType){
-        BoatType checkedType = BoatType.valueOf(boatType.toUpperCase());
-        boatService.addBoat(boat, checkedType);
+    @PostMapping
+    public void addBoat(@RequestBody Boat boat){
+
+        boatService.addBoat(boat);
     }
 
 
     // request for updating fields of a boat
-    @PutMapping("/{boatId}/{boatType}")
-    public void updateBoat(@RequestBody Boat boat, @PathVariable Long boatId,@PathVariable String boatType){
-        BoatType checkedType = BoatType.valueOf(boatType.toUpperCase());
-        boatService.updateBoat(boat,checkedType);
+    @PutMapping("/{boatId}")
+    public void updateBoat(@RequestBody Boat boat, @PathVariable Long boatId){
+        boatService.updateBoat(boat);
     }
 
 }
