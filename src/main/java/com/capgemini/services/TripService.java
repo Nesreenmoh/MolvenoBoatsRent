@@ -136,8 +136,9 @@ public void updateElectricalBoat(Boat boat){
         @Override
         public void run() {
             boat.setAvailable(true);
+            boat.setStatus("Charging");
             boatRepository.save(boat);
-            System.out.println("Hello guys");
+
         }
     }, (chargingTime *3600000) );
 }

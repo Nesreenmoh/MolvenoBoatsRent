@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "GUEST",uniqueConstraints = {@UniqueConstraint(columnNames = {"ID_NO"})})
+@Table(name = "GUEST")
 public class Guest {
 
     @Id
@@ -38,6 +38,11 @@ public class Guest {
         this.name = name;
         this.idType = idType;
         this.idNo = idNo;
+        this.phone = phone;
+    }
+
+    public Guest(String name, String phone) {
+        this.name = name;
         this.phone = phone;
     }
 

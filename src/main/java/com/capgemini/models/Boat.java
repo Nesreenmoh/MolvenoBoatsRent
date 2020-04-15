@@ -10,7 +10,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "BOAT", uniqueConstraints = {@UniqueConstraint(columnNames = {"BOAT_NO"})})
-public class Boat {
+public class Boat implements Comparable<Boat>{
 
     @Id
     @Column(name = "ID")
@@ -176,5 +176,9 @@ public class Boat {
                 '}';
     }
 
-
+// implementation of a comparable method that will order fetching boats by Total Time used
+    @Override
+    public int compareTo(Boat boat) {
+        return this.getTotalTime().compareTo(boat.getTotalTime());
+    }
 }
