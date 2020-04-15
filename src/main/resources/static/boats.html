@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" />
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+    <title>Boat page</title>
+    <link rel="stylesheet" href="/index.css" />
+    <script src="JS/boats.js"></script>
+  </head>
+  <body>
+    <!--  Update modal -->
+    <div id="updateModal" class="modal">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header" style="background-color: #138496;">
+            <h5 class="title">Boat Data</h5>
+            <button type="button" id="updateClose" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form>
+              <div class="form-group">
+                <label for=""> Boat No </label>
+                <input type="text" class="form-control" id="editboatNo" placeholder="boatNo" required />
+              </div>
+              <div class="form-group">
+                <label for=""> Seats </label>
+                <input type="text" class="form-control" id="editseats" placeholder="seats" required />
+              </div>
+              <div class="form-group">
+                <label for=""> Boat Type </label>
+                <select name="" id="editboatType">
+                  <option value="rowing"> Rowing </option>
+                  <option value="Electrical"> Electrical </option>
+                  <option value="Raft"> Raft </option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for=""> Charging Time - hours </label>
+                <input type="number" class="form-control" id="editchargingTime" placeholder="Charging Time" min="1" disabled />
+              </div>
+              <div class="form-group">
+                <label for=""> Minimum Price for a boat </label>
+                <input type="number" class="form-control" id="editminPrice" placeholder="Minimum Price" min="1" required />
+              </div>
+              <div class="form-group">
+                <label for=""> Actual Price for the day </label>
+                <input type="number" class="form-control" id="editaccPrice" placeholder="Actual Price" min="1" required />
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" id="save" class="btn btn-primary">
+              Save
+            </button>
+            <button type="button" id="closeSmallbtn" class="btn btn-secondary">
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Error/Success Modal Messages -->
+    <div id="error" class="modal" tabindex="-1" role="dialog">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Warning</h5>
+            <button type="button" id="closeError" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <p id="message"></p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" id="closeOK" class="btn btn-secondary" data-dismiss="modal">
+              OK
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Block for maintenance Modal Message -->
+    <div id="blockmodel" class="modal" tabindex="-1" role="dialog">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Warning</h5>
+            <button type="button" id="blockcloseError" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="form-group">
+              <label for=""> Boat No </label>
+              <input type="text" class="form-control" id="blockboatNo" placeholder="Boat No" required />
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" id="blockOk" class="btn btn-secondary" data-dismiss="modal">
+              block
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- unblock a boat from maintenance  -->
+    <div id="unblockmodel" class="modal" tabindex="-1" role="dialog">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Warning</h5>
+            <button type="button" id="blockcloseError" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="form-group">
+              <label for=""> Boat No </label>
+              <input type="text" class="form-control" id="unblockboatNo" placeholder="Boat No" required />
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" id="unblockOk" class="btn btn-secondary" data-dismiss="modal">
+              unblock
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- navigation bar  -->
+    <nav id="myNavbar">
+      <h1 id="logo">
+        <span class="text"> <i class="fa fa-ship"></i> Molveno </span> Boat Rent
+      </h1>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="reservation.html">Reservation</a></li>
+        <li><a href="trips.html">Trip</a></li>
+        <li><a href="boats.html">Boat</a></li>
+        <li>
+          <a href="#">Overview</a>
+          <ul class="inside">
+            <li><a href="boatsoverview.html">Boats</a></li>
+            <li><a href="tripsoverview.html">Trips</a></li>
+            <li><a href="reservationoverview.html">Reservations</a></li>
+          </ul>
+        </li>
+      </ul>
+    </nav>
+    <!-- main container -->
+    <div class="container">
+      <!-- <div class="sidebar">
+
+        <ul>
+          <li>
+            <a href="#"><i class="fa fa-ship"> BOATS </i></a>
+          </li>
+          <li>
+            <a href="#"><i class="fas fa-briefcase"> TRIPS</i></a>
+          </li>
+          <li>
+            <a href="#"><i class="fas fa-stream"> OVERVIEW</i></a>
+          </li>
+          <li>
+            <a href="#"><i class="fas fa-sliders-h"> ABOUT</i></a>
+          </li>
+        </ul>
+      </div> -->
+
+      <!-- form for adding boat -->
+      <div class="main">
+        <div class="section" style="padding-left: 3rem;">
+          <h2 style="text-align: center;">Boat Data</h2>
+          <div class="row">
+            <div class="col-md-8">
+              <form>
+                <fieldset>
+                  <div class="form-group">
+                    <label for=""> Boat Number </label>
+                    <input type="text" class="form-control" id="boatNo" placeholder="Boat No" required />
+                  </div>
+                  <div class="form-group">
+                    <label for=""> Number of Seats </label>
+                    <input type="number" class="form-control" id="seats" placeholder="Number of seats" min="1" required />
+                  </div>
+                  <div class="form-group">
+                    <label for=""> Boat Type </label>
+                    <select name="" id="boatType">
+                      <option value="rowing"> Rowing </option>
+                      <option value="Electrical"> Electrical </option>
+                      <option value="Raft"> Raft </option>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label for=""> Charging Time - hours </label>
+                    <input type="number" class="form-control" id="chargingTime" placeholder="Charging Time" min="1" disabled />
+                  </div>
+                  <div class="form-group">
+                    <label for=""> Minimum Price for a boat </label>
+                    <input type="number" class="form-control" id="minPrice" placeholder="Minimum Price" min="1" required />
+                  </div>
+                  <div class="form-group">
+                    <label for=""> Actual Price for the day </label>
+                    <input type="number" class="form-control" id="accPrice" placeholder="Actual Price" min="1" required />
+                  </div>
+                  <div class="form-group">
+                    <button type="button" id="addBoat" class="btn btn-success">
+                      Add Boat
+                    </button>
+                    <button type="button" id="blockBoatbtn" class="btn btn-danger">
+                      Block Boat
+                    </button>
+                    <button type="button" id="unBlockbtn" class="btn btn-info">
+                      unBlock Boat
+                    </button>
+                  </div>
+                </fieldset>
+              </form>
+            </div>
+          </div>
+        </div>
+        <!-- table of the boats data -->
+        <div class="col-md-12">
+          <div class="form-group" style="display: inline-block;">
+            <label for="">Search(Boat No.) </label>
+            <input type="text" class="form-control" id="searchNo" placeholder="Boat Number" required />
+          </div>
+          <h4>Boats Data</h4>
+          <table class="table table-bordered table-striped table-hover">
+            <thead>
+              <tr class="table-primary">
+                <th>ID</th>
+                <th>Boat No</th>
+                <th>Type</th>
+                <th>Seats</th>
+                <th>Min_price</th>
+                <th>Actual_price</th>
+                <th>Charging Time</th>
+                <th>Status</th>
+                <th>Update</th>
+              </tr>
+            </thead>
+            <tbody id="rowingBoat-list"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

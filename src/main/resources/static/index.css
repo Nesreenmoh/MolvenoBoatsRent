@@ -1,0 +1,138 @@
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+a {
+  text-decoration: none;
+  color: black;
+}
+
+#myNavbar {
+  display: flex;
+  position: sticky;
+  top: 0;
+  background: #b8daff;
+  color: #fff;
+  justify-content: space-between;
+  height: 10vh;
+  font-size: 22px;
+  z-index: 1;
+  padding: 1rem;
+}
+#myNavbar ul {
+  display: flex;
+  align-items: center;
+  list-style: none;
+  font-size: 24px;
+}
+
+#myNavbar ul li a {
+  color: black;
+  padding: 0.75rem;
+  margin: 0 0.25rem;
+}
+
+#myNavbar ul li ul {
+  display: none;
+  position: absolute;
+  color: black;
+  background-color: #b8daff;
+  font-size: 20px;
+  text-transform: uppercase;
+  min-width: 160px;
+  align-items: center;
+  border-radius: 3px 3px 4px 4px;
+  outline: none;
+  z-index: 2;
+}
+
+#myNavbar ul li:hover ul {
+  display: block;
+}
+
+#myNavbar ul li ul li:first-child {
+  padding-top: 1rem;
+}
+#myNavbar ul li ul li {
+  width: 100px;
+  border-radius: 1px;
+  display: block;
+  margin: 2px 0 15px 0;
+}
+
+.inside a:hover {
+  background: #010101;
+  transition: 0.6s;
+}
+
+#myNavbar ul li ul li a {
+  padding: 4px 16px;
+  margin: 0.5rem;
+}
+#myNavbar ul li a:hover {
+  background: #333;
+  border-radius: 5px;
+}
+
+p {
+  margin: 0.75rem 0;
+  line-height: 50px;
+  font-size: 18px;
+}
+
+.text {
+  color: #333;
+}
+.large-heading {
+  font-size: 2.3rem;
+  margin-bottom: 0.75rem;
+  line-height: 1.1;
+}
+.medium-heading {
+  font-size: 2rem;
+  margin-bottom: 0.75;
+  line-height: 1.1;
+}
+.lead {
+  font-size: 1.3rem;
+  margin-bottom: 2rem;
+}
+.py-1 {
+  padding: 1.5rem 0;
+}
+.py-2 {
+  padding: 2rem 0;
+}
+.py-3 {
+  padding: 3rem 0;
+}
+.myContainer {
+  max-width: 1000px;
+  margin: auto;
+  padding: 0 2rem;
+  overflow: hidden;
+  /* border-style: solid;
+  border-width: 2px; */
+}
+
+.text-center {
+  text-align: center;
+}
+#updateModal {
+  display: none;
+}
+#blockmodel,
+#unblockmodel,
+#stopTripModel {
+  display: none;
+}
+.guestData {
+  border-style: solid;
+  border-width: 1px;
+  border-color: #b8daff;
+  padding-left: 0.5rem;
+}
+.guestData h4 {
+  text-align: center;
+}
