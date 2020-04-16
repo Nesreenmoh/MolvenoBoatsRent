@@ -139,7 +139,7 @@ public void updateElectricalBoat(Boat boat){
             boat.setStatus("Charging");
             boatRepository.save(boat);
 
-        }
+        }// run this function after a charging time of the boat in millieseconds
     }, (chargingTime *3600000) );
 }
 

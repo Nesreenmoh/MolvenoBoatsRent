@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" />
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+    <title>Reservation page</title>
+    <link rel="stylesheet" href="/CSS/index.css" />
+    <script src="JS/reservation.js"></script>
+  </head>
+  <body>
+    <!-- Error/Success Modal Messages -->
+    <div id="error" class="modal">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Warning</h5>
+            <button type="button" id="closeError" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <p id="message"></p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" id="closeOK" class="btn btn-secondary" data-dismiss="modal">
+              OK
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- navigation bar -->
+    <nav id="myNavbar">
+      <h1 id="logo">
+        <span class="text"> <i class="fa fa-ship"></i> Molveno </span> Boat Rent
+      </h1>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="reservation.html">Reservation</a></li>
+        <li><a href="trip.html">Trip</a></li>
+        <li><a href="boats.html">Boat</a></li>
+        <li>
+          <a href="#">Overview</a>
+          <ul class="inside">
+            <li><a href="boatsoverview.html">Boats</a></li>
+            <li><a href="tripsoverview.html">Trips</a></li>
+            <li><a href="reservationoverview.html">Reservations</a></li>
+          </ul>
+        </li>
+      </ul>
+    </nav>
+
+    <!-- main container -->
+    <div class="container">
+      <!-- Reservation Form  -->
+      <form>
+        <div class="form-group" style="display: inline-block;">
+          <label for=""> Boat Type </label>
+          <select name="" id="boatType">
+            <option value="rowing"> Rowing </option>
+            <option value="electrical"> Electrical </option>
+            <option value="raft"> Raft </option>
+          </select>
+        </div>
+        <div class="form-group" style="display: inline-block;">
+          <label for=""> Date </label>
+          <input type="date" class="form-control" id="resDate" placeholder="Date" required />
+        </div>
+        <div class="form-group" style="display: inline-block;">
+          <label for=""> Start Time </label>
+          <input type="time" class="form-control" id="resTime" placeholder="Time" required />
+        </div>
+        <div class="form-group" style="display: inline-block;">
+          <label for=""> Duration </label>
+          <input type="number" min="1" class="form-control" id="duration" placeholder="Duration" />
+        </div>
+        <div class="form-group" style="display: inline-block;">
+          <label for=""> Guest Name </label>
+          <input type="text" class="form-control" id="guestName" placeholder="Guest" />
+        </div>
+        <div class="form-group" style="display: inline-block;">
+          <label for=""> Phone </label>
+          <input type="text" class="form-control" id="phone" placeholder=" Guest Phone" required style="width: auto;" />
+        </div>
+        <div class="form-group">
+          <button type="button" id="reservationbtn" class="btn btn-success">
+            Make a Reservation
+          </button>
+        </div>
+      </form>
+    </div>
+  </body>
+</html>

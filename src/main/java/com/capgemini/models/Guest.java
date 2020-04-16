@@ -31,6 +31,10 @@ public class Guest {
     @JsonIgnore
     private List<Trip> guestTrips= new ArrayList<>();
 
+    @OneToMany(mappedBy = "guest", cascade = CascadeType.ALL)
+    @JsonIgnore
+    private List<Reservation> reservations;
+
     public Guest() {
     }
 
@@ -85,4 +89,21 @@ public class Guest {
     public void setPhone(String phone) {
         this.phone = phone;
     }
+
+    public List<Trip> getGuestTrips() {
+        return guestTrips;
+    }
+
+    public void setGuestTrips(List<Trip> guestTrips) {
+        this.guestTrips = guestTrips;
+    }
+
+    public List<Reservation> getReservations() {
+        return reservations;
+    }
+
+    public void setReservations(List<Reservation> reservations) {
+        this.reservations = reservations;
+    }
 }
+

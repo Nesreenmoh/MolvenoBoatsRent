@@ -1,80 +1,139 @@
-body {
-  font-family: 'Roboto', sans-serif;
-}
-
 * {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-  text-decoration: none;
   box-sizing: border-box;
-}
-
-.container {
-  max-width: 80%;
-  height: 100vh;
-  margin: auto;
-  display: flex;
-  justify-content: flex-start;
-  padding-top: 2rem;
+  padding: 0;
+  margin: 0;
 }
 a {
+  text-decoration: none;
   color: black;
 }
-.sidebar {
-  width: 25%;
-  height: 100%;
+
+#myNavbar {
+  display: flex;
+  position: sticky;
+  top: 0;
   background: #b8daff;
+  color: #fff;
+  justify-content: space-between;
+  height: 10vh;
+  font-size: 22px;
+  z-index: 1;
+  padding: 1rem;
+}
+#myNavbar ul {
+  display: flex;
+  align-items: center;
+  list-style: none;
+  font-size: 24px;
 }
 
-h2 {
-  text-align: center;
-  justify-content: center;
-  color: white;
-}
-.sidebar {
-  padding: 1rem 0.5rem;
-}
-.sidebar ul a {
-  line-height: 65px;
-  font-size: 18px;
+#myNavbar ul li a {
   color: black;
-  padding-left: 40px;
-}
-ul li:hover a {
-  padding-left: 50px;
+  padding: 0.75rem;
+  margin: 0 0.25rem;
 }
 
-.section {
-  width: 100%;
-  margin-left: 2rem;
-  border-width: 1px;
-  border: 1px solid #008cba;
+#myNavbar ul li ul {
+  display: none;
+  position: absolute;
+  color: black;
+  background-color: #b8daff;
+  font-size: 20px;
+  text-transform: uppercase;
+  min-width: 160px;
+  align-items: center;
+  border-radius: 3px 3px 4px 4px;
+  outline: none;
+  z-index: 2;
 }
 
-h3 {
-  background-color: #337ab3;
-  height: 40px;
+#myNavbar ul li:hover ul {
+  display: block;
+}
+
+#myNavbar ul li ul li:first-child {
+  padding-top: 1rem;
+}
+#myNavbar ul li ul li {
+  width: 100px;
+  border-radius: 1px;
+  display: block;
+  margin: 2px 0 15px 0;
+}
+
+.inside a:hover {
+  background: #010101;
+  transition: 0.6s;
+}
+
+#myNavbar ul li ul li a {
+  padding: 4px 16px;
+  margin: 0.5rem;
+}
+#myNavbar ul li a:hover {
+  background: #333;
+  border-radius: 5px;
+}
+
+p {
+  margin: 0.75rem 0;
+  line-height: 50px;
+  font-size: 18px;
+}
+
+.text {
+  color: #333;
+}
+.large-heading {
+  font-size: 2.3rem;
+  margin-bottom: 0.75rem;
+  line-height: 1.1;
+}
+.medium-heading {
+  font-size: 2rem;
+  margin-bottom: 0.75;
+  line-height: 1.1;
+}
+.lead {
+  font-size: 1.3rem;
+  margin-bottom: 2rem;
+}
+.py-1 {
+  padding: 1.5rem 0;
+}
+.py-2 {
+  padding: 2rem 0;
+}
+.py-3 {
+  padding: 3rem 0;
+}
+.myContainer {
+  max-width: 1000px;
+  margin: auto;
+  padding: 0 2rem;
+  overflow: hidden;
+  /* border-style: solid;
+  border-width: 2px; */
+}
+
+.text-center {
   text-align: center;
-  justify-content: center;
 }
-
-input {
-  display: inline-block;
-  padding-left: 1rem;
-}
-label {
-  display: inline-block;
-  padding-right: 1rem;
-}
-#error {
+#updateModal {
   display: none;
 }
-.main {
-  display: flex;
-  flex-direction: column;
+#blockmodel,
+#unblockmodel,
+#stopTripModel,
+#guestDataModel {
+  display: none;
 }
-.col-md-12 {
-  margin-left: 2rem !important;
-  margin-top: 1rem !important;
+.guestData {
+  border-style: solid;
+  border-width: 1px;
+  border-color: #b8daff;
+  padding-left: 0.5rem;
+}
+.guestData h4 {
+  text-align: center;
 }

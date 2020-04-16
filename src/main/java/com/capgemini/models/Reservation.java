@@ -1,9 +1,6 @@
 package com.capgemini.models;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
@@ -14,17 +11,21 @@ public class Reservation {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    private LocalDate reservation_date;
+    private LocalDate resDate;
     private LocalTime res_start_time;
     private Boolean cancel=false;
+
+    @ManyToOne
+    private Guest guest;
 
     // constructors
     public Reservation() {
     }
 
-    public Reservation(LocalDate reservation_date, LocalTime res_start_time) {
-        this.reservation_date = reservation_date;
+    public Reservation(LocalDate resDate, LocalTime res_start_time, Guest guest) {
+        this.resDate = resDate;
         this.res_start_time = res_start_time;
+        this.guest = guest;
     }
 
     // setters and getters
@@ -36,12 +37,12 @@ public class Reservation {
         this.id = id;
     }
 
-    public LocalDate getReservation_date() {
-        return reservation_date;
+    public LocalDate getResDate() {
+        return resDate;
     }
 
-    public void setReservation_date(LocalDate reservation_date) {
-        this.reservation_date = reservation_date;
+    public void setResDate(LocalDate resDate) {
+        this.resDate = resDate;
     }
 
     public LocalTime getRes_start_time() {
@@ -58,6 +59,14 @@ public class Reservation {
 
     public void setCancel(Boolean cancel) {
         this.cancel = cancel;
+    }
+
+    public Guest getGuest() {
+        return guest;
+    }
+
+    public void setGuest(Guest guest) {
+        this.guest = guest;
     }
 }
 
