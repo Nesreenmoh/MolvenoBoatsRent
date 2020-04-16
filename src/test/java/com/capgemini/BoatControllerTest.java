@@ -3,7 +3,6 @@ package com.capgemini;
 import com.capgemini.controllers.BoatController;
 import com.capgemini.models.Boat;
 import com.capgemini.services.BoatService;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -15,11 +14,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
 
-import static org.hamcrest.Matchers.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -28,15 +23,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
+
 import org.mockito.junit.MockitoJUnitRunner;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -61,7 +54,7 @@ public class BoatControllerTest {
 
     // test get method in boat controller
     @Test
-    public void GetAllTestMethod() throws Exception {
+    public void boatFindAllTestMethod() throws Exception {
         Boat boat1 = new Boat("1009", 4,"Rowing", 100.0, 200.0, 0 );
         List<Boat> boatList = new ArrayList<>();
         boatList.add(boat1);
@@ -101,6 +94,27 @@ public class BoatControllerTest {
                 .andExpect(jsonPath("$.no", Matchers.is((boat1.getNo()))))
                 .andExpect(jsonPath("$.noOfSeats", Matchers.is(boat1.getNoOfSeats())))
                 .andExpect(status().isOk());
+
+    }
+
+    @Test
+    public void BoatPutTestMethod() throws Exception {
+        Boat boat1 = new Boat("1009", 4,"Rowing", 100.0, 200.0, 0 );
+        boat1.setId(13L);
+        boatService.addBoat(boat1);
+
+        when(boatService.getOneBoat(13L)).thenReturn(boat1);
+        boat1.setNo("1010");
+        ObjectMapper mapper = new ObjectMapper();
+        String json = mapper.writeValueAsString(boat1);
+
+        MvcResult mvcResult = this.mockMvc.perform(MockMvcRequestBuilders.put("/api/boats/13")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(json)).andReturn();
+
+        int status = mvcResult.getResponse().getStatus();
+        assertEquals(200, status);
+        assertEquals("1010", boat1.getNo());
 
     }
 

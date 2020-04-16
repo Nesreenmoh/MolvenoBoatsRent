@@ -44,6 +44,10 @@ public class Boat implements Comparable<Boat>{
     @JsonIgnore
     private List<Trip> trips = new ArrayList<>();
 
+    @OneToMany(mappedBy = "boat", cascade = CascadeType.ALL)
+    @JsonIgnore
+    private List<Reservation> reservations= new ArrayList<>();
+
 
     public Boat() {
     }
@@ -161,6 +165,15 @@ public class Boat implements Comparable<Boat>{
         this.trips = trips;
     }
 
+    public List<Reservation> getReservations() {
+        return reservations;
+    }
+
+    public void setReservations(List<Reservation> reservations) {
+        this.reservations = reservations;
+    }
+
+    // override toString method
     @Override
     public String toString() {
         return "Boat{" +

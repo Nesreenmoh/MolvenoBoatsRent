@@ -19,6 +19,9 @@ public class Reservation {
     @ManyToOne
     private Guest guest;
 
+    @ManyToOne
+    private Boat boat;
+
     // constructors
     public Reservation() {
     }

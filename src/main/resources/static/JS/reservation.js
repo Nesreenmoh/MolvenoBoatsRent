@@ -11,6 +11,7 @@ $(document).ready(function (e) {
   $('#reservationbtn').click(function (e) {
     console.log(typeof $('#resDate').val());
     checkfields();
+    addReservation();
   });
 });
 
@@ -31,9 +32,15 @@ function checkfields() {
 
 const isValid = (mydate) => {
   const today = new Date();
-  const parseMyDate = Date.parse(mydate);
+  // console.log(today.getDay)
+  const parseMyDate = new Date(mydate);
+
+  console.log(parseMyDate.getDate());
+  console.log(parseMyDate.getMonth());
+  console.log(parseMyDate.getFullYear());
+
   if (
-    parseMyDate.getDay() >= today.getDay() &&
+    parseMyDate.getDate() >= today.getDate() &&
     parseMyDate.getMonth() >= today.getMonth() &&
     parseMyDate.getFullYear() >= today.getFullYear()
   ) {
