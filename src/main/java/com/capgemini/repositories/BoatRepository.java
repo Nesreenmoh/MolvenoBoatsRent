@@ -9,5 +9,5 @@ import java.util.List;
 public interface BoatRepository extends JpaRepository<Boat, Long> {
     Boat findOneById(Long id);
     Boat findOneByNo(String no);
-    List<Boat> findAllByType(String type);
+
 }

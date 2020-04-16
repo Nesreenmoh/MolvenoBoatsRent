@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment-with-locales.min.js"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" />
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
 
@@ -58,50 +59,63 @@
     <!-- main container -->
     <div class="container">
       <!-- Reservation Form  -->
-      <form>
-        <div class="form-group" style="display: inline-block;">
-          <label for=""> Boat Type </label>
-          <select name="" id="boatType">
-            <option value="rowing"> Rowing </option>
-            <option value="electrical"> Electrical </option>
-            <option value="raft"> Raft </option>
-          </select>
-        </div>
-        <div class="form-group" style="display: inline-block;">
-          <label for=""> Boat Details </label>
-          <select name="" id="boatNo"> </select>
-        </div>
-        <div class="form-group" style="display: inline-block;">
-          <label for=""> Date </label>
-          <input type="date" class="form-control" id="resDate" placeholder="Date" required />
-        </div>
-        <div class="form-group" style="display: inline-block;">
-          <label for=""> Start Time </label>
-          <input type="time" class="form-control" id="resTime" placeholder="Time" required />
-        </div>
-        <div class="form-group" style="display: inline-block;">
-          <label for=""> Duration </label>
-          <input type="number" min="1" class="form-control" id="duration" placeholder="Duration" />
-        </div>
-        <div class="form-group" style="display: inline-block;">
-          <label for=""> Guest Name </label>
-          <input type="text" class="form-control" id="guestName" placeholder="Guest" />
-        </div>
-        <div class="form-group" style="display: inline-block;">
-          <label for=""> Phone </label>
-          <input type="text" class="form-control" id="phone" placeholder=" Guest Phone" required style="width: auto;" />
-        </div>
-        <div class="form-group">
-          <button type="button" id="reservationbtn" class="btn btn-success">
-            Make Reservation
-          </button>
-        </div>
-        <div class="form-group">
-          <button type="button" id="reservationbtn" class="btn btn-success">
-            Check Reservation
-          </button>
-        </div>
-      </form>
+      <div class="reservationForm">
+        <br />
+        <h5>Reservation Form</h5>
+        <br />
+        <form>
+          <div class="form-group">
+            <label for=""> Boat Type </label>
+            <select name="" id="boatType">
+              <option value="rowing"> Rowing </option>
+              <option value="electrical"> Electrical </option>
+              <option value="raft"> Raft </option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for=""> Boat Details </label>
+            <select name="" id="boatNo"> </select>
+          </div>
+          <div class="form-group">
+            <label for=""> Date </label>
+            <input type="datetime-local" class="form-control" id="resDate" placeholder="Date" required style="width: 40%;" />
+          </div>
+          <div class="form-group" style="display: inline-block;">
+            <label for=""> Duration </label>
+            <input type="number" min="1" class="form-control" id="duration" placeholder="Duration" />
+          </div>
+          <div class="form-group">
+            <label for=""> Guest Name </label>
+            <input type="text" class="form-control" id="guestName" placeholder="Guest" />
+          </div>
+          <div class="form-group">
+            <label for=""> Phone </label>
+            <input type="text" class="form-control" id="phone" placeholder=" Guest Phone" required />
+          </div>
+          <div class="form-group">
+            <button type="button" id="reservationbtn" class="btn btn-success">
+              Make Reservation
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <div class="ReservationList">
+        <h4>Reservation Data</h4>
+        <table class="table table-hover table-stripped table-bordered">
+          <thead>
+            <tr class="table-primary">
+              <th>ID</th>
+              <th>Date</th>
+              <th>Start Time</th>
+              <th>End Time</th>
+              <th>Guest Name</th>
+              <th>Cancel</th>
+            </tr>
+          </thead>
+          <tbody id="reservation-list"></tbody>
+        </table>
+      </div>
     </div>
   </body>
 </html>

@@ -27,17 +27,6 @@ public class BoatService {
         return boatRepository.save(boat);
     }
 
-//    public void linkBoats(Long id, List<String> boatsId) {
-//        Trip trip = tripRepository.findOneById(id);
-//        for (int i = 0; i < boatsId.size(); i++) {
-//            Boat boat = boatRepository.findOneByNo(boatsId.get(i));
-//            boat.setAvailable(false);
-//            boat.setTrips(trip);
-//            tripRepository.save(trip);
-//            boatRepository.save(boat);
-//        }
-//        System.out.println(trip.getBoats().toString());
-//    }
 
     // retrieve all boats
     public List<Boat> getAllBoats() {
@@ -80,7 +69,14 @@ public class BoatService {
 
     //  retrieve by boat type
     public List<Boat> getBoatByType(String boatType) {
-        return boatRepository.findAllByType(boatType);
+        List<Boat> myList = new ArrayList<>();
+        List<Boat> allBoats = boatRepository.findAll();
+        for(int i=0; i<allBoats.size();i++){
+            if(allBoats.get(i).getType().equalsIgnoreCase(boatType)){
+                myList.add(allBoats.get(i));
+            }
+        }
+        return myList;
     }
 
     // update a boat data

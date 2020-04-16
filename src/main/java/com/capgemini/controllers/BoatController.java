@@ -42,7 +42,9 @@ public class BoatController {
     // request to check for suitable boat
     @GetMapping("/{noOfPeople}/{type}")
     public List<Boat> checkBoats(@PathVariable Integer noOfPeople,@PathVariable String type ){
-        return boatService.getAvailableBoat(noOfPeople,type);
+        List<Boat> boats = boatService.getAvailableBoat(noOfPeople,type);
+        Collections.sort(boats);
+        return boats;
     }
 
     // request to get all trips for specific boat
@@ -54,16 +56,16 @@ public class BoatController {
     }
 
     // request to get all boats by type
-    @GetMapping("/boattype/{boatType}")
+    @GetMapping("/type/{boatType}")
     public List<Boat> findByBoatType(@PathVariable String boatType){
-
-        return boatService.getBoatByType(boatType);
+        List<Boat> boats = boatService.getBoatByType(boatType);
+        Collections.sort(boats);
+        return boats;
     }
 
     // request to add a boat
     @PostMapping
     public Boat addBoat(@RequestBody Boat boat){
-
        return boatService.addBoat(boat);
     }
 

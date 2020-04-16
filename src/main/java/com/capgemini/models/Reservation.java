@@ -2,7 +2,6 @@ package com.capgemini.models;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.time.LocalTime;
 
 @Entity
 public class Reservation {
@@ -11,10 +10,12 @@ public class Reservation {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    private LocalDate resDate;
-    private LocalTime res_start_time;
-    private LocalTime res_end_time;
+    private String resDate;
+    private String res_start_time;
+    private String res_end_time;
+    private Integer duration;
     private Boolean cancel=false;
+    private String status;
 
     @ManyToOne
     private Guest guest;
@@ -26,10 +27,10 @@ public class Reservation {
     public Reservation() {
     }
 
-    public Reservation(LocalDate resDate, LocalTime res_start_time, Guest guest) {
+    public Reservation(String resDate, Integer duration, String status) {
         this.resDate = resDate;
-        this.res_start_time = res_start_time;
-        this.guest = guest;
+        this.duration = duration;
+        this.status = status;
     }
 
     // setters and getters
@@ -41,20 +42,12 @@ public class Reservation {
         this.id = id;
     }
 
-    public LocalDate getResDate() {
+    public String getResDate() {
         return resDate;
     }
 
-    public void setResDate(LocalDate resDate) {
+    public void setResDate(String resDate) {
         this.resDate = resDate;
-    }
-
-    public LocalTime getRes_start_time() {
-        return res_start_time;
-    }
-
-    public void setRes_start_time(LocalTime res_start_time) {
-        this.res_start_time = res_start_time;
     }
 
     public Boolean getCancel() {
@@ -73,11 +66,45 @@ public class Reservation {
         this.guest = guest;
     }
 
-    public LocalTime getRes_end_time() {
+
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public Boat getBoat() {
+        return boat;
+    }
+
+    public void setBoat(Boat boat) {
+        this.boat = boat;
+    }
+
+    public Integer getDuration() {
+        return duration;
+    }
+
+    public void setDuration(Integer duration) {
+        this.duration = duration;
+    }
+
+    public String getRes_start_time() {
+        return res_start_time;
+    }
+
+    public void setRes_start_time(String res_start_time) {
+        this.res_start_time = res_start_time;
+    }
+
+    public String getRes_end_time() {
         return res_end_time;
     }
 
-    public void setRes_end_time(LocalTime res_end_time) {
+    public void setRes_end_time(String res_end_time) {
         this.res_end_time = res_end_time;
     }
 }
