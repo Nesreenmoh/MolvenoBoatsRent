@@ -23,8 +23,8 @@ public class BoatService {
 
 
     // add boat
-    public void addBoat(Boat boat) {
-        boatRepository.save(boat);
+    public Boat addBoat(Boat boat) {
+        return boatRepository.save(boat);
     }
 
 //    public void linkBoats(Long id, List<String> boatsId) {

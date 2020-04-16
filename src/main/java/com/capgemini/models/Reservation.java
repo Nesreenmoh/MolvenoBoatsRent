@@ -13,6 +13,7 @@ public class Reservation {
 
     private LocalDate resDate;
     private LocalTime res_start_time;
+    private LocalTime res_end_time;
     private Boolean cancel=false;
 
     @ManyToOne
@@ -67,6 +68,14 @@ public class Reservation {
 
     public void setGuest(Guest guest) {
         this.guest = guest;
+    }
+
+    public LocalTime getRes_end_time() {
+        return res_end_time;
+    }
+
+    public void setRes_end_time(LocalTime res_end_time) {
+        this.res_end_time = res_end_time;
     }
 }
 

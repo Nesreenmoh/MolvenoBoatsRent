@@ -8,7 +8,8 @@ $(document).ready(function (e) {
     $('#error').hide();
   });
 
-  $('reservationbtn').click(function (e) {
+  $('#reservationbtn').click(function (e) {
+    console.log(typeof $('#resDate').val());
     checkfields();
   });
 });
@@ -30,7 +31,16 @@ function checkfields() {
 
 const isValid = (mydate) => {
   const today = new Date();
-  return mydate.getDate() >= today.getDate() && mydate.getMonth() == today.getMonth() && someDate.getFullYear() == today.getFullYear();
+  const parseMyDate = Date.parse(mydate);
+  if (
+    parseMyDate.getDay() >= today.getDay() &&
+    parseMyDate.getMonth() >= today.getMonth() &&
+    parseMyDate.getFullYear() >= today.getFullYear()
+  ) {
+    return true;
+  } else {
+    return false;
+  }
 };
 // function to show alert
 function myAlert(msg, className) {

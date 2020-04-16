@@ -7,6 +7,7 @@ import com.capgemini.services.BoatService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collections;
 import java.util.List;
 
 @RestController
@@ -19,8 +20,9 @@ public class BoatController {
     // request to get all boats
     @GetMapping
     public List<Boat> findAllBoats() {
-
-        return boatService.getAllBoats();
+        List<Boat> boats = boatService.getAllBoats();
+        Collections.sort(boats);
+        return boats;
     }
 
     //request to get a boat by id
@@ -54,14 +56,15 @@ public class BoatController {
     // request to get all boats by type
     @GetMapping("/boattype/{boatType}")
     public List<Boat> findByBoatType(@PathVariable String boatType){
+
         return boatService.getBoatByType(boatType);
     }
 
     // request to add a boat
     @PostMapping
-    public void addBoat(@RequestBody Boat boat){
+    public Boat addBoat(@RequestBody Boat boat){
 
-        boatService.addBoat(boat);
+       return boatService.addBoat(boat);
     }
 
 
