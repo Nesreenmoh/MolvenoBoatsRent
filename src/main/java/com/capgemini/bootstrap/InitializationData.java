@@ -33,9 +33,7 @@ public class InitializationData implements CommandLineRunner {
         Guest guest1 = new Guest("Nesreen Alshargabi", "Driving License", "67856749", "78967856");
         Guest guest2 = new Guest("Sara Alkomem", "ID", "786666", "1242423");
         Guest guest3 = new Guest("Yusuf Alkomem", "Passport", "224234", "423424");
-        guestRepository.save(guest1);
-        guestRepository.save(guest2);
-        guestRepository.save(guest3);
+
 
 
         Boat boat1 = new Boat("1001", 2, "Rowing", 100.0, 200.0, 0);
@@ -48,13 +46,20 @@ public class InitializationData implements CommandLineRunner {
         Boat boat8 = new Boat("1008", 8, "Raft", 100.0, 200.0, 0);
 
         Trip trip1 = new Trip(LocalDateTime.of(2020,04,15, 5,1,45,36912), "ongoing");
-        Trip trip2 = new Trip(LocalDateTime.of(2020,04,15, 5,1,45,36912), "ongoing");
+        Trip trip2 = new Trip(LocalDateTime.of(2020,04,11, 7,1,45,36912), "ongoing");
+        List<Trip> trips1 = new ArrayList<>();
+        List<Trip> trips2 = new ArrayList<>();
         trip1.setGuest(guest1);
-        List<Trip> trips = new ArrayList<>();
-        trips.add(trip1);
-        trips.add(trip2);
+        trip2.setBoats(boat2);
+        trip2.setGuest(guest2);
+        guest2.setGuestTrips(trips2);
+        boat2.getTrips().add(trip2);
 
-        boat1.setTrips(trips);
+        trips1.add(trip1);
+        trips1.add(trip2);
+        trips2.add(trip2);
+
+        boat1.setTrips(trips1);
         trip1.setBoats(boat1);
         boatRepository.save(boat1);
         boatRepository.save(boat2);
@@ -67,5 +72,9 @@ public class InitializationData implements CommandLineRunner {
 
         tripRepository.save(trip1);
         tripRepository.save(trip2);
+
+        guestRepository.save(guest1);
+        guestRepository.save(guest2);
+        guestRepository.save(guest3);
     }
 }

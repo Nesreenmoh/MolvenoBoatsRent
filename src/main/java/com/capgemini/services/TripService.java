@@ -4,18 +4,19 @@ import com.capgemini.models.Boat;
 import com.capgemini.models.Guest;
 import com.capgemini.models.Trip;
 import com.capgemini.repositories.BoatRepository;
+import com.capgemini.repositories.GuestRepository;
 import com.capgemini.repositories.TripRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -26,11 +27,15 @@ public class TripService {
     @Autowired
     private BoatRepository boatRepository;
 
+    @Autowired
+    private GuestRepository guestRepository;
+
     Boat boat;
 
     // add trip
     public void addTrip(Trip trip) {
         trip.setStartTime(LocalDateTime.now());
+
         tripRepository.save(trip);
     }
 
@@ -90,7 +95,7 @@ public class TripService {
         trip.getBoats().setIncome(diff  * trip.getBoats().getAccPrice());
         trip.getBoats().setTotalTime(diff);
         tripRepository.save(trip);
-        boatRepository.save(trip.getBoats());
+       boatRepository.save(trip.getBoats());
         return trip;
     }
 
@@ -103,15 +108,20 @@ public class TripService {
         System.out.println("The diff is " + diff);
         return diff;
     }
+
+
     // retreive the income of all trips
     public double getIncomeAllTrips() {
         List<Trip> allTrips = tripRepository.findAll();
         double totalIncome = 0.0;
         for (int i = 0; i < allTrips.size(); i++) {
-            totalIncome += allTrips.get(i).getBoats().getIncome();
+            if(allTrips.get(i).getBoats().getIncome()!= null){
+                totalIncome += allTrips.get(i).getBoats().getIncome();
+            }
         }
         return totalIncome;
 }
+
 
 // update electrical boat and set the availability after the charging time
 public void updateElectricalBoat(Boat boat){
@@ -132,24 +142,26 @@ public void updateElectricalBoat(Boat boat){
 }
 
 
-// retrieve used boats No for all trip
-//    public List<Boat> getUsedBoatsForAllTrip() {
-//        List<Trip> trips = tripRepository.findAll();
-//        List<Boat> usedBoats = new ArrayList<>();
-//        for (int i = 0; i < trips.size(); i++) {
-//            boolean isUnique = false;
-//            for (int j = 0; j < i; j++) {
-//                if (trips.get(i).getBoats().get(i).getNo()
-//                        .equalsIgnoreCase(trips.get(j).getBoats().get(j).getNo())) {
-//                    isUnique = true;
-//                    break;
-//                }
-//            }
-//            if (!isUnique) {
-//                usedBoats.add(trips.get(i).getBoats().get(i));
-//            }
-//        }
-//        System.out.println(usedBoats);
-//        return usedBoats;
-//    }
+ // retrieve used boats No for all trips
+    public List<Boat> getUsedBoatsForAllTrip() {
+        List<Trip> trips = tripRepository.findAll();
+        List<Boat> usedBoats = new ArrayList<>();
+        for (int i = 0; i < trips.size(); i++) {
+            boolean isUnique = false;
+            for (int j = 0; j < i; j++) {
+                if (trips.get(i).getBoats().getNo()
+                        .equalsIgnoreCase(trips.get(j).getBoats().getNo())) {
+                    isUnique = true;
+                    break;
+                }
+            }
+            if (!isUnique) {
+                usedBoats.add(trips.get(i).getBoats());
+            }
+        }
+        System.out.println("Used boats for all trips "+ usedBoats);
+        return usedBoats;
+    }
+
+
 }

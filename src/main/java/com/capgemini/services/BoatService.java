@@ -95,4 +95,24 @@ public class BoatService {
         boat.setAvailable(false);
         boatRepository.save(boat);
     }
+
+    // get total income for all boats
+    public double getTotalIncomeOfBoats(){
+        List<Boat> boats = boatRepository.findAll();
+        double total=0.0;
+        for(int i=0;i<boats.size();i++){
+          total +=boats.get(i).getIncome();
+        }
+        return total;
+    }
+
+    // return total time of all boats
+    public Long getTotalTimeOfBoats(){
+        List<Boat> boats = boatRepository.findAll();
+        Long total=0L;
+        for(int i=0;i<boats.size();i++){
+            total +=boats.get(i).getTotalTime();
+        }
+        return total;
+    }
 }

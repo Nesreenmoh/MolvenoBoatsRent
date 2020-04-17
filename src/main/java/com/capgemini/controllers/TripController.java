@@ -6,6 +6,7 @@ import com.capgemini.services.TripService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.ParseException;
 import java.util.List;
 
 @RestController
@@ -27,12 +28,6 @@ public class TripController {
         return tripService.findOneTrip(id);
     }
 
-//    // request to get all boats of specific trip
-//    @GetMapping("/boats/{id}")
-//    public String getAllBoatsOfTrip(@PathVariable Long id){
-//        return tripService.findAllboats(id);
-//    }
-
     // request to get all ended trips
     @GetMapping("/ended")
     public List<Trip> getEndedTrips(){
@@ -49,6 +44,12 @@ public class TripController {
     @GetMapping("/totalincome")
     public double getIncomeAllTrips(){
         return tripService.getIncomeAllTrips();
+    }
+
+    // request to get the used boats for all trips
+    @GetMapping("/usedboats")
+    public List<Boat> getUsedBoats() {
+      return   tripService.getUsedBoatsForAllTrip();
     }
     // request to add a trip
     @PostMapping

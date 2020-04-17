@@ -91,24 +91,33 @@ function addGuest() {
       success: function (return_guest) {
         // clearfields();
         console.log('guest id is ' + return_guest.id);
-        addTrip(return_guest.id);
+        addTrip(return_guest);
       },
     });
   }
 }
 // add trip function
-function addTrip(guest_id) {
+function addTrip(return_guest) {
   var boat;
   $.get('api/boats/boat/' + $('#Boats').val(), function (myboat) {
-    boat = myboat;
-    console.log(boat);
     var trip = {
       status: 'ongoing',
       guest: {
-        id: guest_id,
+        id: return_guest.id,
+        name: return_guest.name,
+        idNo: return_guest.idNo,
+        idType: return_guest.idType,
+        phone: return_guest.phone,
       },
       boats: {
-        id: boat.id,
+        id: myboat.id,
+        no: myboat.no,
+        noOfSeats: myboat.noOfSeats,
+        minPrice: myboat.minPrice,
+        type: myboat.type,
+        available: false,
+        chargingTime: myboat.chargingTime,
+        accPrice: myboat.accPrice,
       },
     };
     console.log(trip);
@@ -254,22 +263,22 @@ function clearAllfields() {
 // function to retrieve all ongoing trips
 function getAllOngoingTrips() {
   $.get('api/trips/ongoing', function (ongoing) {
-    console.log(ongoing);
-    //    count number of ongoingTrips
-    var ongoingTripsCounter = ongoing.length;
-    console.log(ongoingTripsCounter);
+    // console.log(ongoing);
+    // //    count number of ongoingTrips
+    // var ongoingTripsCounter = ongoing.length;
+    // console.log(ongoingTripsCounter);
     $('#trips-list').empty();
     for (var i = 0; i < ongoing.length; i++) {
       const list = document.getElementById('trips-list');
       const row = document.createElement('tr');
       row.innerHTML = `
-          <td>${ongoing[i].id}</td>
+           <td>${ongoing[i].id}</td>
            <td>${ongoing[i].startTime}</td>
            <td>${ongoing[i].boats.no}</td>
-            <td>${ongoing[i].boats.type}</td>
+           <td>${ongoing[i].boats.type}</td>
            <td>${ongoing[i].guest.name}</td>
-             <td>${ongoing[i].status}</td>
-              <td><a href="#"> <button class="btn btn-danger"> Stop Trip</button></a></td>
+            <td>${ongoing[i].status}</td>
+            <td><a href="#"> <button class="btn btn-danger"> Stop Trip</button></a></td>
               `;
       list.appendChild(row);
     }

@@ -25,6 +25,18 @@ public class BoatController {
         return boats;
     }
 
+    // request to get total income of all boats
+    @GetMapping("/income")
+    public double getTotalIncome(){
+        return boatService.getTotalIncomeOfBoats();
+    }
+
+    // request to get total income of all boats
+    @GetMapping("/totalTime")
+    public double getTotalTime(){
+        return boatService.getTotalTimeOfBoats();
+    }
+
     //request to get a boat by id
     @GetMapping("/{boatId}")
     public Boat findOneBoatById(@PathVariable Long boatId) {

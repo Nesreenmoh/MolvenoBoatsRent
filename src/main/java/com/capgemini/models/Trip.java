@@ -21,10 +21,10 @@ public class Trip {
     @Column(name = "DURATION")
     private Long duration=0L;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private Guest guest;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private Boat boats;
 
 
