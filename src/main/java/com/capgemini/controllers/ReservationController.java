@@ -20,6 +20,16 @@ public class ReservationController {
       return reservationService.findAllReservations();
     }
 
+    @GetMapping("/{resId}")
+    public Reservation getOneById(@PathVariable Long resId){
+        return reservationService.findOneByID(resId);
+    }
+
+    @GetMapping("/cancelled")
+    public List<Reservation> findAllCancelledReservation(){
+        return reservationService.findAllCancelledReservations();
+    }
+
     @PostMapping
     public void addReservation(@RequestBody Reservation reservation) throws ParseException {
         reservationService.addReservation(reservation);

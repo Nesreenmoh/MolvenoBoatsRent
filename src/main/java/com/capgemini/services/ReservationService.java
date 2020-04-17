@@ -12,10 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 
 @Transactional
 @Service
@@ -33,28 +30,60 @@ public class ReservationService {
         String dataString = reservation.getResDate();
         SimpleDateFormat myFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
         Date date =  myFormat.parse(dataString);
-        System.out.println("my Date is: " + date);
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
         calendar.add(Calendar.HOUR,reservation.getDuration());
         Date endTime = calendar.getTime();
         String startTime = new SimpleDateFormat("hh:mm a").format(date);
         String endTimeFormat = new SimpleDateFormat("hh:mm a").format(endTime);
+
+        // setting  a time to the reservation fields
         reservation.setRes_start_time(startTime);
-        System.out.println("start time "+ startTime);
-        System.out.println("end time " + endTimeFormat);
         reservation.setRes_end_time(endTimeFormat);
         reservation.getBoat().setStatus("Reserved");
+
+        // saving the data in the repository
         boatRepository.save(reservation.getBoat());
         reservationRepository.save(reservation);
 
     }
 
+    // update reservation
     public void updateReservation(Reservation reservation){
+        reservation.setStatus("Cancelled");
+        reservation.getBoat().setStatus("Active");
+        boatRepository.save(reservation.getBoat());
         reservationRepository.save(reservation);
     }
 
-    public List<Reservation> findAllReservations() {
-        return reservationRepository.findAll();
+    // find all cancelled reservation
+    public List<Reservation> findAllCancelledReservations() {
+        List<Reservation> myList = new ArrayList<>();
+        List<Reservation> retrievedList = reservationRepository.findAll();
+        for(int i=0;i< retrievedList.size();i++){
+            if(retrievedList.get(i).getStatus().equalsIgnoreCase("Cancelled")){
+                myList.add(retrievedList.get(i));
+            }
+        }
+        return myList;
     }
+
+    // find all reservation
+    public List<Reservation> findAllReservations() {
+        List<Reservation> myList = new ArrayList<>();
+        List<Reservation> reservationList =reservationRepository.findAll();
+         for(int i=0;i< reservationList.size();i++){
+             if(reservationList.get(i).getStatus().equalsIgnoreCase("Active")){
+                 myList.add(reservationList.get(i));
+             }
+         }
+         return myList;
+    }
+
+    // find a reservation by Id
+
+    public  Reservation findOneByID(Long id){
+       return reservationRepository.findOneById(id);
+    }
+
 }

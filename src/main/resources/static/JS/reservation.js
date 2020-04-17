@@ -1,7 +1,8 @@
-var myboats, myguest;
+var myboats, myguest, res_id, guest_name, boat_no, res_date, res_start, res_end;
 $(document).ready(function (e) {
   loadAllBoatsByType($('#boatType').val());
   loadAllGuest();
+  loadAllReservation();
   // setting events on the model buttons
   $('#closeError').click(function (e) {
     $('#error').hide();
@@ -41,6 +42,41 @@ $(document).ready(function (e) {
     checkfields();
     saveGuest();
     getBoatByNo();
+  });
+
+  // events on the buttons of the cancel reservation model
+  $('#reservation-list').on('click', function (e) {
+    if (e.target.className === 'btn btn-danger') {
+      res_id = e.target.parentNode.parentElement.parentElement.children[0].innerHTML;
+      res_date = e.target.parentNode.parentElement.parentElement.children[1].innerHTML;
+      res_start = e.target.parentNode.parentElement.parentElement.children[2].innerHTML;
+      res_end = e.target.parentNode.parentElement.parentElement.children[3].innerHTML;
+      guest_name = e.target.parentNode.parentElement.parentElement.children[4].innerHTML;
+      boat_no = e.target.parentNode.parentElement.parentElement.children[6].innerHTML;
+      $('.modal-title').html('');
+      $('.modal-title').html('Warning');
+      $('.modal-header').css('background-color', 'rosybrown');
+      $('#cancelModel').show();
+    }
+  });
+  $('#cancelcloseError').click(function () {
+    $('#cancelModel').hide();
+  });
+
+  $('#noCancelbtn').click(function () {
+    $('#cancelModel').hide();
+  });
+
+  $('#yesCancelbtn').click(function (e) {
+    cancelReservation();
+    $('#cancelModel').hide();
+  });
+
+  $('#checkCancelreservationbtn').click(function () {
+    loadCancelledReservation();
+  });
+  $('#checkreservationbtn').click(function () {
+    loadAllReservation();
   });
 });
 
@@ -147,6 +183,14 @@ function addReservation(boats) {
     },
     boat: {
       id: boats.id,
+      no: boats.no,
+      noOfSeats: boats.noOfSeats,
+      type: boats.type,
+      maintenance: boats.maintenance,
+      minPrice: boats.minPrice,
+      accPrice: boats.accPrice,
+      chargingTime: boats.chargingTime,
+      status: 'Reserved',
     },
   };
   console.log(reservation);
@@ -171,6 +215,8 @@ function addReservation(boats) {
 function loadAllReservation() {
   $.get('api/reservations', function (reservations) {
     console.log(reservations);
+    $('.CancelledList').hide();
+    $('.ReservationList').show();
     $('#reservation-list').empty();
     for (var i = 0; i < reservations.length; i++) {
       const list = document.getElementById('reservation-list');
@@ -186,6 +232,86 @@ function loadAllReservation() {
               <td><a href="#"> <button class="btn btn-danger"> Cancel </button></a></td>
               `;
       list.appendChild(row);
+    }
+  });
+}
+
+// function to cancel a reservation
+function cancelReservation() {
+  $.get('api/guests/name/' + guest_name, function (guests) {
+    $.get('api/boats/boat/' + boat_no, function (boat) {
+      $.get('api/reservations/' + res_id, function (reservations) {
+        var reservation = {
+          id: reservations.id,
+          resDate: reservations.resDate,
+          res_start_time: reservations.res_start_time,
+          res_end_time: reservations.res_end_time,
+          duration: reservations.duration,
+          status: 'Cancelled',
+          guest: {
+            id: guests.id,
+            name: guests.name,
+            phone: guests.phone,
+            idType: guests.idType,
+            idNo: guests.idNo,
+          },
+          boat: {
+            id: boat.id,
+            no: boat.no,
+            noOfSeats: boat.noOfSeats,
+            type: boat.type,
+            maintenance: boat.maintenance,
+            minPrice: boat.minPrice,
+            accPrice: boat.accPrice,
+            chargingTime: boat.chargingTime,
+            status: 'Active',
+          },
+        };
+        var jsonObject = JSON.stringify(reservation);
+        $.ajax({
+          url: 'api/reservations/' + reservations.id,
+          type: 'PUT',
+          contentType: 'application/json',
+          data: jsonObject,
+          success: function () {
+            myAlert('Reservation has been Cancelled');
+            loadAllReservation();
+          },
+          error: function () {
+            myAlert('Invalid Input', 'error');
+          },
+        });
+      });
+    });
+  });
+}
+
+// function to load all cancelled reservation
+function loadCancelledReservation() {
+  $.get('api/reservations/cancelled', function (reservations) {
+    const index = reservations.length;
+    console.log('cancelled List is ' + index);
+    if (reservations.length > 0) {
+      $('.ReservationList').hide();
+      $('.CancelledList').show();
+      $('#cancelled-list').empty();
+      for (var i = 0; i < reservations.length; i++) {
+        const list = document.getElementById('cancelled-list');
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td>${reservations[i].id}</td>
+           <td>${reservations[i].resDate}</td>
+           <td>${reservations[i].res_start_time}</td>
+            <td>${reservations[i].res_end_time}</td>
+           <td>${reservations[i].guest.name}</td>
+           <td>${reservations[i].boat.type}</td>
+            <td>${reservations[i].boat.no}</td>
+             <td>${reservations[i].status}</td>
+              `;
+        list.appendChild(row);
+      }
+    } else {
+      myAlert('No cancelled Reservations', 'warning');
     }
   });
 }

@@ -34,6 +34,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 
+import java.lang.reflect.GenericArrayType;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -71,8 +72,27 @@ public class GuestControllerTest {
                 .andExpect(jsonPath("$.id", Matchers.is((guest1.getId()))))
                 .andExpect(jsonPath("$.name", Matchers.is(guest1.getName())))
                 .andExpect(status().isOk());
-
-
-
     }
+
+    @Test
+    public void getAllGuestsTestMethod() throws Exception {
+        Guest guest1 = new Guest("Mohammed", "ID", "53453463","12345" );
+        guest1.setId(14L);
+        guestService.addGuest(guest1);
+        List<Guest> myGuests= new ArrayList<>();
+        myGuests.add(guest1);
+        when(guestService.findAllGuest()).thenReturn(myGuests);
+
+        mockMvc.perform(get("/api/guests"))
+                .andDo(print())
+                .andExpect(jsonPath("$", Matchers.hasSize(1)))
+                .andExpect(jsonPath("$.[0].id", Matchers.is(14)))
+                .andExpect(jsonPath("$.[0].name", Matchers.is("Mohammed")))
+                .andExpect(jsonPath("$.[0].idNo", Matchers.is("53453463")))
+                .andExpect(jsonPath("$.[0].idType", Matchers.is("ID")))
+                .andExpect(jsonPath("$.[0].phone", Matchers.is("12345")))
+                .andExpect(MockMvcResultMatchers.status().isOk());
+        verify(guestService, times(1)).findAllGuest();
+    }
+
 }

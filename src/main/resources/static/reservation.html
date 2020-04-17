@@ -36,6 +36,31 @@
       </div>
     </div>
 
+    <!-- Error/Success Modal Messages -->
+    <div id="cancelModel" class="modal">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Warning</h5>
+            <button type="button" id="cancelcloseError" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <p id="message">Are you sure you want to cancel this reservation?</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" id="yesCancelbtn" class="btn btn-secondary" data-dismiss="modal">
+              Yes
+            </button>
+            <button type="button" id="noCancelbtn" class="btn btn-secondary" data-dismiss="modal">
+              Cancel
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- Guest Details Modal Messages -->
     <div id="addguestmodal" class="modal">
       <div class="modal-dialog" role="document">
@@ -117,16 +142,22 @@
             <input type="number" min="1" class="form-control" id="duration" placeholder="Duration" />
           </div>
           <div class="form-group">
-            <button type="button" id="reservationbtn" class="btn btn-success">
-              Make Reservation
-            </button>
+            <label for=""> Guest name : </label>
+            <select id="guestNames"> </select>
             <button type="button" id="guestdatabtn" class="btn btn-success">
               New Guest
             </button>
           </div>
           <div class="form-group">
-            <label for=""> Guest name : </label>
-            <select id="guestNames"> </select>
+            <button type="button" id="reservationbtn" class="btn btn-success">
+              Make Reservation
+            </button>
+            <button type="button" id="checkCancelreservationbtn" class="btn btn-success">
+              Check Cancelled Reservation
+            </button>
+            <button type="button" id="checkreservationbtn" class="btn btn-success">
+              Fetch Reservation
+            </button>
           </div>
         </form>
       </div>
@@ -147,6 +178,24 @@
             </tr>
           </thead>
           <tbody id="reservation-list"></tbody>
+        </table>
+      </div>
+      <div class="CancelledList">
+        <h4>Cancelled Reservation Data</h4>
+        <table class="table table-hover table-stripped table-bordered">
+          <thead>
+            <tr class="table-primary">
+              <th>ID</th>
+              <th>Date</th>
+              <th>Start Time</th>
+              <th>End Time</th>
+              <th>Guest Name</th>
+              <th>Boat Type</th>
+              <th>Boat No</th>
+              <th>status</th>
+            </tr>
+          </thead>
+          <tbody id="cancelled-list"></tbody>
         </table>
       </div>
     </div>

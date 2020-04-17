@@ -126,7 +126,8 @@ p {
 #unblockmodel,
 #stopTripModel,
 #guestDataModel,
-#addguestmodal {
+#addguestmodal,
+.CancelledList {
   display: none;
 }
 .guestData {

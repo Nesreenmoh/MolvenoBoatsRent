@@ -12,8 +12,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
-@Service
 @Transactional
+@Service
 public class BoatService {
 
     @Autowired
@@ -24,6 +24,8 @@ public class BoatService {
 
     // add boat
     public Boat addBoat(Boat boat) {
+        /* checking if a boat is raft so will not
+         be available unless he has been  reservation for 4 times */
         if(boat.getType().equalsIgnoreCase("raft")){
             boat.setAvailable(false);
         }

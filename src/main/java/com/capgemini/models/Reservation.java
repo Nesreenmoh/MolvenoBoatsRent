@@ -99,5 +99,17 @@ public class Reservation {
     public void setRes_end_time(String res_end_time) {
         this.res_end_time = res_end_time;
     }
+
+    @Override
+    public String toString() {
+        return "Reservation{" +
+                "id=" + id +
+                ", resDate='" + resDate + '\'' +
+                ", res_start_time='" + res_start_time + '\'' +
+                ", res_end_time='" + res_end_time + '\'' +
+                ", duration=" + duration +
+                ", status='" + status + '\'' +
+                '}';
+    }
 }
 
