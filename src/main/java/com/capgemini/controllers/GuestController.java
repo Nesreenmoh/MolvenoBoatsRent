@@ -30,6 +30,7 @@ public class GuestController {
     public Guest getOneByname(@PathVariable String name){
        return guestService.findOneByName(name);
     }
+
     @PostMapping
     public Guest addGuest(@RequestBody Guest guest){
 

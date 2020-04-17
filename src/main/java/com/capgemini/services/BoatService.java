@@ -24,6 +24,10 @@ public class BoatService {
 
     // add boat
     public Boat addBoat(Boat boat) {
+        if(boat.getType().equalsIgnoreCase("raft")){
+            boat.setAvailable(false);
+        }
+        boat.setAvailable(true);
         return boatRepository.save(boat);
     }
 

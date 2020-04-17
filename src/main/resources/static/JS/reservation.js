@@ -1,5 +1,7 @@
+var myboats, myguest;
 $(document).ready(function (e) {
   loadAllBoatsByType($('#boatType').val());
+  loadAllGuest();
   // setting events on the model buttons
   $('#closeError').click(function (e) {
     $('#error').hide();
@@ -9,29 +11,84 @@ $(document).ready(function (e) {
     $('#error').hide();
   });
 
+  // event on guest model data
+  $('#GuestcloseError').click(function (e) {
+    $('#addguestmodal').hide();
+  });
+
+  $('#GuestModeldateclose').click(function (e) {
+    $('#addguestmodal').hide();
+  });
+
+  $('#GuestModeldatasave').click(function (e) {
+    saveGuest();
+    $('#addguestmodal').hide();
+  });
+
+  $('#guestdatabtn').click(function () {
+    $('.modal-title').html('');
+    $('.modal-title').html('Warning');
+    $('.modal-header').css('background-color', 'rosybrown');
+    $('#addguestmodal').show();
+  });
+
   // function when boat's type change
   $('#boatType').change(function (e) {
     loadAllBoatsByType($('#boatType').val());
   });
   // event on making a reservation
   $('#reservationbtn').click(function (e) {
-    console.log(typeof $('#resDate').val());
     checkfields();
-    addReservation();
+    saveGuest();
+    getBoatByNo();
   });
 });
 
+// function add a guest
+function saveGuest() {
+  if ($('#guestName').val() === '' || $('#phone').val() === '') {
+    myAlert('Please Enter the required guest data', 'error');
+  } else {
+    var guest = {
+      name: $('#guestName').val(),
+      phone: $('#phone').val(),
+    };
+
+    var jsonObject = JSON.stringify(guest);
+    $.ajax({
+      url: 'api/guests/',
+      type: 'POST',
+      contentType: 'application/json',
+      data: jsonObject,
+      success: function (return_guest) {
+        loadAllGuest();
+        myAlert('Added successfully', 'success');
+        myguest = return_guest.id;
+        console.log('guest id is ' + myguest);
+      },
+    });
+  }
+}
+
+// function to load all guests to a select input
+function loadAllGuest() {
+  var returned_guests = '';
+  $.get('api/guests', function (guests) {
+    console.log(guests);
+    if (guests.length > 0) {
+      for (var i = 0; i < guests.length; i++) {
+        returned_guests +=
+          '<option value ="' + guests[i].id + '"> Name:  ' + guests[i].name + ' with ' + guests[i].phone + '  phone number</option>';
+        $('#guestNames').html(returned_guests);
+      }
+    }
+  });
+}
 // function to check the validation of the fields
 function checkfields() {
   const valid = isValid($('#resDate').val());
   console.log(valid);
-  if (
-    $('#resTime').val() === '' ||
-    $('#duration').val() === '' ||
-    $('#guestName').val() === '' ||
-    $('#phone').val() === '' ||
-    valid === false
-  ) {
+  if ($('#resTime').val() === '' || $('#duration').val() === '' || valid === false) {
     myAlert('Please fill in the required data!', 'error');
   }
 }
@@ -40,8 +97,6 @@ function checkfields() {
 
 const isValid = (mydate) => {
   const today = new Date();
-  console.log(mydate);
-  // console.log(today.getDay)
   const parseMyDate = new Date(mydate);
 
   console.log(parseMyDate.getDate());
@@ -74,19 +129,35 @@ function loadAllBoatsByType(mytype) {
   });
 }
 
+// function to get all boats by no
+function getBoatByNo() {
+  $.get('api/boats/boat/' + $('#boatNo').val(), function (boats) {
+    addReservation(boats);
+  });
+}
 // function to add a reservation
 
-function addReservation() {
-  var timeString = $('#resDate').val();
-  var datetime = new Date(timeString);
-  console.log('my date is' + timeString);
-  // console.log(typeof datetime);
+function addReservation(boats) {
   var reservation = {
-    resDate: timeString,
+    resDate: $('#resDate').val(),
     duration: $('#duration').val(),
     status: 'Active',
+    guest: {
+      id: $('#guestNames').val(),
+    },
+    boat: {
+      id: boats.id,
+      no: boats.no,
+      noOfSeats: boats.noOfSeats,
+      type: boats.type,
+      maintenance: boats.maintenance,
+      minPrice: boats.minPrice,
+      accPrice: boats.accPrice,
+      chargingTime: boats.chargingTime,
+      status: 'Reserved',
+    },
   };
-
+  console.log(reservation);
   var jsonObject = JSON.stringify(reservation);
   console.log(jsonObject);
   $.ajax({
@@ -96,12 +167,34 @@ function addReservation() {
     data: jsonObject,
     success: function () {
       myAlert('Reservation has created');
-
-      //getAllBoats();
+      loadAllReservation();
     },
     error: function () {
       myAlert('Invalid Input', 'error');
     },
+  });
+}
+
+// function load all reservation
+function loadAllReservation() {
+  $.get('api/reservations', function (reservations) {
+    console.log(reservations);
+    $('#reservation-list').empty();
+    for (var i = 0; i < reservations.length; i++) {
+      const list = document.getElementById('reservation-list');
+      const row = document.createElement('tr');
+      row.innerHTML = `
+          <td>${reservations[i].id}</td>
+           <td>${reservations[i].resDate}</td>
+           <td>${reservations[i].res_start_time}</td>
+            <td>${reservations[i].res_end_time}</td>
+           <td>${reservations[i].guest.name}</td>
+           <td>${reservations[i].boat.type}</td>
+            <td>${reservations[i].boat.no}</td>
+              <td><a href="#"> <button class="btn btn-danger"> Cancel </button></a></td>
+              `;
+      list.appendChild(row);
+    }
   });
 }
 // function to show alert

@@ -1,8 +1,11 @@
 package com.capgemini;
 
 import com.capgemini.controllers.GuestController;
+import com.capgemini.models.Boat;
+import com.capgemini.models.Guest;
 import com.capgemini.services.BoatService;
 import com.capgemini.services.GuestService;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -52,7 +55,24 @@ public class GuestControllerTest {
     }
 
     @Test
-    public void getGuestsTestMethod() {
+    public void addGuestsTestMethod() throws Exception {
+
+        Guest guest1 = new Guest("Mohammed", "ID", "53453463","12345" );
+        guestService.addGuest(guest1);
+        when(guestService.addGuest(Mockito.any(Guest.class))).thenReturn(guest1);
+
+        ObjectMapper mapper = new ObjectMapper();
+        String json = mapper.writeValueAsString(guest1);
+
+        this.mockMvc.perform(MockMvcRequestBuilders.post("/api/guests")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(json))
+                .andDo(print())
+                .andExpect(jsonPath("$.id", Matchers.is((guest1.getId()))))
+                .andExpect(jsonPath("$.name", Matchers.is(guest1.getName())))
+                .andExpect(status().isOk());
+
+
 
     }
 }

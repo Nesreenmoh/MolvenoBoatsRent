@@ -31,7 +31,11 @@ public class InitializationData implements CommandLineRunner {
     public void run(String... args) throws Exception {
 
         Guest guest1 = new Guest("Nesreen Al-shargabi", "Driving License", "67856749", "78967856");
+        Guest guest2 = new Guest("Sara Al-komem", "ID", "786666", "1242423");
+        Guest guest3 = new Guest("Yusuf Al-komem", "Passport", "224234", "423424");
         guestRepository.save(guest1);
+        guestRepository.save(guest2);
+        guestRepository.save(guest3);
 
 
         Boat boat1 = new Boat("1001", 2, "Rowing", 100.0, 200.0, 0);

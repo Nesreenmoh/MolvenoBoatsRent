@@ -35,6 +35,38 @@
         </div>
       </div>
     </div>
+
+    <!-- Guest Details Modal Messages -->
+    <div id="addguestmodal" class="modal">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header" style="background-color: rosybrown;">
+            <h5 class="modal-title">Guest Details</h5>
+            <button type="button" id="GuestcloseError" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="form-group">
+              <label for=""> Guest Name </label>
+              <input type="text" class="form-control" id="guestName" placeholder="Guest" />
+            </div>
+            <div class="form-group">
+              <label for=""> Phone </label>
+              <input type="text" class="form-control" id="phone" placeholder=" Guest Phone" required />
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" id="GuestModeldatasave" class="btn btn-secondary" data-dismiss="modal">
+              Save
+            </button>
+            <button type="button" id="GuestModeldateclose" class="btn btn-secondary" data-dismiss="modal">
+              Cancel
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
     <!-- navigation bar -->
     <nav id="myNavbar">
       <h1 id="logo">
@@ -85,17 +117,16 @@
             <input type="number" min="1" class="form-control" id="duration" placeholder="Duration" />
           </div>
           <div class="form-group">
-            <label for=""> Guest Name </label>
-            <input type="text" class="form-control" id="guestName" placeholder="Guest" />
-          </div>
-          <div class="form-group">
-            <label for=""> Phone </label>
-            <input type="text" class="form-control" id="phone" placeholder=" Guest Phone" required />
-          </div>
-          <div class="form-group">
             <button type="button" id="reservationbtn" class="btn btn-success">
               Make Reservation
             </button>
+            <button type="button" id="guestdatabtn" class="btn btn-success">
+              New Guest
+            </button>
+          </div>
+          <div class="form-group">
+            <label for=""> Guest name : </label>
+            <select id="guestNames"> </select>
           </div>
         </form>
       </div>
@@ -110,6 +141,8 @@
               <th>Start Time</th>
               <th>End Time</th>
               <th>Guest Name</th>
+              <th>Boat Type</th>
+              <th>Boat No</th>
               <th>Cancel</th>
             </tr>
           </thead>

@@ -14,8 +14,7 @@ public class Reservation {
     private String res_start_time;
     private String res_end_time;
     private Integer duration;
-    private Boolean cancel=false;
-    private String status;
+    private String status="Active";
 
     @ManyToOne
     private Guest guest;
@@ -50,13 +49,6 @@ public class Reservation {
         this.resDate = resDate;
     }
 
-    public Boolean getCancel() {
-        return cancel;
-    }
-
-    public void setCancel(Boolean cancel) {
-        this.cancel = cancel;
-    }
 
     public Guest getGuest() {
         return guest;
