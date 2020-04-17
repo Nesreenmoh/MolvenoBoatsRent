@@ -58,18 +58,6 @@ public class TripService {
         return ongoingTripsList;
     }
 
-//    public String findAllboats(Long id){
-//        Trip trip=tripRepository.findOneById(id);
-//        System.out.println("my trip" +trip.getBoats().toString());
-//        return trip.getBoats().toString();
-//    }
-    // retrieve all boats of specific trip
-//    public List<Boat> findAllBoats(Long id) {
-//        Trip trip = tripRepository.findOneById(id);
-//        //System.out.println(trip.getBoats().toString());
-//        return trip.getBoats();
-//    }
-
     // retrieve all ended trips
     public List<Trip> findAllEndedTrips() {
         List<Trip> endedTripList = new ArrayList<>();

@@ -44,7 +44,8 @@ public class ReservationService {
         System.out.println("start time "+ startTime);
         System.out.println("end time " + endTimeFormat);
         reservation.setRes_end_time(endTimeFormat);
-
+        reservation.getBoat().setStatus("Reserved");
+        boatRepository.save(reservation.getBoat());
         reservationRepository.save(reservation);
 
     }

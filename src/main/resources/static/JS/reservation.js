@@ -147,14 +147,6 @@ function addReservation(boats) {
     },
     boat: {
       id: boats.id,
-      no: boats.no,
-      noOfSeats: boats.noOfSeats,
-      type: boats.type,
-      maintenance: boats.maintenance,
-      minPrice: boats.minPrice,
-      accPrice: boats.accPrice,
-      chargingTime: boats.chargingTime,
-      status: 'Reserved',
     },
   };
   console.log(reservation);
