@@ -16,6 +16,7 @@ public class Reservation {
     private Integer duration;
     private String status="Active";
 
+
     @ManyToOne
     private Guest guest;
 
@@ -49,7 +50,6 @@ public class Reservation {
         this.resDate = resDate;
     }
 
-
     public Guest getGuest() {
         return guest;
     }
@@ -57,8 +57,6 @@ public class Reservation {
     public void setGuest(Guest guest) {
         this.guest = guest;
     }
-
-
 
     public String getStatus() {
         return status;

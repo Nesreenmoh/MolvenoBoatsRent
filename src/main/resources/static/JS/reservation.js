@@ -39,9 +39,14 @@ $(document).ready(function (e) {
   });
   // event on making a reservation
   $('#reservationbtn').click(function (e) {
-    checkfields();
-    saveGuest();
-    getBoatByNo();
+    var valid = isValid($('#resDate').val());
+    if ($('#resTime').val() === '' || $('#duration').val() === '' || valid === false) {
+      myAlert('Please fill in the required data!', 'error');
+    } else {
+      saveGuest();
+      getBoatByNo();
+    }
+    // checkfields();
   });
 
   // events on the buttons of the cancel reservation model
@@ -121,13 +126,13 @@ function loadAllGuest() {
   });
 }
 // function to check the validation of the fields
-function checkfields() {
-  const valid = isValid($('#resDate').val());
-  console.log(valid);
-  if ($('#resTime').val() === '' || $('#duration').val() === '' || valid === false) {
-    myAlert('Please fill in the required data!', 'error');
-  }
-}
+// function checkfields() {
+//   const valid = isValid($('#resDate').val());
+//   console.log(valid);
+//   if ($('#resTime').val() === '' || $('#duration').val() === '' || valid === false) {
+//     myAlert('Please fill in the required data!', 'error');
+//   }
+// }
 
 // function to validate the date
 
@@ -202,7 +207,10 @@ function addReservation(boats) {
     contentType: 'application/json',
     data: jsonObject,
     success: function () {
-      myAlert('Reservation has created');
+      $('.modal-title').html('');
+      $('.modal-title').html('Success');
+      $('.modal-header').css('background-color', 'green');
+      myAlert('Reservation has created', 'success');
       loadAllReservation();
     },
     error: function () {

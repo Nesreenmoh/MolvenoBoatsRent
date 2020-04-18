@@ -27,7 +27,7 @@ public class Guest {
     @Column(name = "PHONE")
     private String phone;
 
-    @OneToMany(mappedBy = "guest",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "guest")
     @JsonIgnore
     private List<Trip> guestTrips= new ArrayList<>();
 

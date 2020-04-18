@@ -5,6 +5,7 @@ $(document).ready(function (e) {
   // event on the body of the table for update button
   $('#rowingBoat-list').on('click', function (e) {
     if (e.target.className === 'btn btn-info') {
+    }
       $('#updateModal').show();
       updated_boatId = e.target.parentNode.parentElement.parentElement.children[0].innerHTML;
       var boatNo = e.target.parentNode.parentElement.parentElement.children[1].innerHTML;
@@ -85,6 +86,12 @@ $(document).ready(function (e) {
     } else {
       $('#chargingTime').attr('disabled', 'disabled');
     }
+    if ($('#boatType').val() === 'Raft') {
+      $('#chargingTime').attr('disabled', 'disabled');
+      $('#minPrice').attr('disabled', 'disabled');
+    } else {
+      $('#minPrice').attr('disabled', false);
+    }
   });
 
   // event to enable the text of edit charging time input - modal
@@ -93,6 +100,12 @@ $(document).ready(function (e) {
       $('#editchargingTime').removeAttr('disabled', false);
     } else {
       $('#editchargingTime').attr('disabled', 'disabled');
+    }
+    if ($('#editboatType').val() === 'Raft') {
+      $('#editchargingTime').attr('disabled', 'disabled');
+      $('#editminPrice').attr('disabled', 'disabled');
+    } else {
+      $('#editminPrice').attr('disabled', false);
     }
   });
 

@@ -24,7 +24,7 @@ public class ReservationService {
     @Autowired
     private BoatRepository boatRepository;
 
-    public static int counter=0;
+    public int counter=0;
 
     // add reservation controller
     public void addReservation(Reservation reservation) throws ParseException {
@@ -46,10 +46,6 @@ public class ReservationService {
             if(counter==4){
                 reservation.getBoat().setAvailable(true);
                 counter=0;
-            }
-            else
-            {
-                reservation.getBoat().setAvailable(false);
             }
         }
 

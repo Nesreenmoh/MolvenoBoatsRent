@@ -35,8 +35,12 @@ public class TripService {
     // add trip
     public void addTrip(Trip trip) {
         trip.setStartTime(LocalDateTime.now());
-
         tripRepository.save(trip);
+        Guest guest = trip.getGuest();
+        Boat boat = trip.getBoats();
+        boat.setAvailable(false);
+        boatRepository.save(boat);
+        guestRepository.save(guest);
     }
 
 
@@ -91,11 +95,14 @@ public class TripService {
         // calculate the duration of this trip
         long diff = calculateDuration(trip);
         trip.setDuration(diff);
-        trip.getBoats().setAvailable(state);
-        trip.getBoats().setIncome(diff  * trip.getBoats().getAccPrice());
         trip.getBoats().setTotalTime(diff);
+        trip.getBoats().setAvailable(state);
+         if(trip.getBoats().getType().equalsIgnoreCase("Raft")){
+             trip.getBoats().setIncome(trip.getBoats().getAccPrice());
+         }
+        trip.getBoats().setIncome(diff  * trip.getBoats().getAccPrice());
         tripRepository.save(trip);
-       boatRepository.save(trip.getBoats());
+        boatRepository.save(trip.getBoats());
         return trip;
     }
 

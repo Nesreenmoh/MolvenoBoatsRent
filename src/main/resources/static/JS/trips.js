@@ -1,6 +1,7 @@
 var stop_trip_id, stop_boat_No, stop_type, stopped_guest, start_time;
 $(document).ready(function () {
   getAllOngoingTrips();
+  loadAllGuest();
   $('#checkbtn').on('click', function (e) {
     if ($('#noOfPersons').val() === '') {
       myAlert('Please Enter a number of persons', 'error');
@@ -18,7 +19,7 @@ $(document).ready(function () {
   });
   // event on add trip
   $('#addTripbtn').on('click', function (e) {
-    addGuest();
+    addTrip();
   });
   // event on the stop trip
   $('#trips-list').on('click', function (e) {
@@ -29,6 +30,9 @@ $(document).ready(function () {
       stop_type = e.target.parentNode.parentElement.parentElement.children[3].innerHTML;
       var guestname = e.target.parentNode.parentElement.parentElement.children[4].innerHTML;
       getAguest(guestname);
+      $('.modal-title').html('');
+      $('.modal-title').html('Stop Trip');
+      $('.modal-header').css('background-color', 'red');
       $('#stopTripModel').show();
     }
   });
@@ -49,6 +53,26 @@ $(document).ready(function () {
   $('#GuestModelcloseOK').on('click', function () {
     $('#guestDataModel').hide();
   });
+
+  $('#guestdatabtn').click(function () {
+    $('.modal-title').html('');
+    $('.modal-title').html('Guest Data');
+    $('.modal-header').css('background-color', 'rosybrown');
+    $('#addguestmodal').show();
+  });
+
+  // events on the add new guest model
+  $('#GuestModeldateclose').click(function () {
+    $('#addguestmodal').hide();
+  });
+  $('#GuestcloseError').click(function (e) {
+    $('#addguestmodal').hide();
+  });
+
+  $('#GuestModeldatasave').click(function () {
+    saveGuest();
+    $('#addguestmodal').hide();
+  });
 });
 
 // function to check for suitable boats
@@ -60,7 +84,14 @@ function checkforSuitableBoats() {
     if (suitableBoats.length > 0) {
       if (suitableBoats.length < max) {
         for (var i = 0; i < suitableBoats.length; i++) {
-          returned_boats += '<option value ="' + suitableBoats[i].no + '">' + suitableBoats[i].no + '</option>';
+          returned_boats +=
+            '<option value ="' +
+            suitableBoats[i].no +
+            '"> Boat No. ' +
+            suitableBoats[i].no +
+            ' with ' +
+            suitableBoats[i].noOfSeats +
+            ' seats </option>';
           $('#Boats').html(returned_boats);
         }
       }
@@ -70,74 +101,59 @@ function checkforSuitableBoats() {
   });
 }
 
-// function to add guest
-function addGuest() {
-  if ($('#guestName').val() === '' || $('#idNumer').val() === '') {
-    myAlert('Please Enter the required guest data', 'error');
-  } else {
-    var guest = {
-      name: $('#guestName').val(),
-      idType: $('#idType').val(),
-      idNo: $('#idNumer').val(),
-      phone: $('#phone').val(),
-    };
-
-    var jsonObject = JSON.stringify(guest);
-    $.ajax({
-      url: 'api/guests/',
-      type: 'POST',
-      contentType: 'application/json',
-      data: jsonObject,
-      success: function (return_guest) {
-        // clearfields();
-        console.log('guest id is ' + return_guest.id);
-        addTrip(return_guest);
-      },
-    });
-  }
-}
 // add trip function
-function addTrip(return_guest) {
-  var boat;
-  $.get('api/boats/boat/' + $('#Boats').val(), function (myboat) {
-    var trip = {
-      status: 'ongoing',
-      guest: {
-        id: return_guest.id,
-        name: return_guest.name,
-        idNo: return_guest.idNo,
-        idType: return_guest.idType,
-        phone: return_guest.phone,
-      },
-      boats: {
-        id: myboat.id,
-        no: myboat.no,
-        noOfSeats: myboat.noOfSeats,
-        minPrice: myboat.minPrice,
-        type: myboat.type,
-        available: false,
-        chargingTime: myboat.chargingTime,
-        accPrice: myboat.accPrice,
-      },
-    };
-    console.log(trip);
-    var jsonObject = JSON.stringify(trip);
-    $.ajax({
-      url: 'api/trips',
-      type: 'POST',
-      contentType: 'application/json',
-      data: jsonObject,
-      success: function () {
-        // linkBoatsWithTrip(mytrip.id, myboats);
-        getAllOngoingTrips();
-        myAlert('A trip starts!', 'success');
-        clearAllfields();
-        updateBoat(boat);
-      },
-      error: function () {
-        myAlert('Invalid Input', 'error');
-      },
-    });
+function addTrip() {
+  console.log('guest id is ' + $('#guestNames').val());
+  // get the guest data
+  myguest = $.ajax({
+    url: 'api/guests/' + Number($('#guestNames').val()),
+    async: false,
+    dataType: 'json',
+  }).responseJSON;
+
+  // console.log('my guest ' + myguest.id);
+  // get the boat  data
+  myboat = $.ajax({
+    url: 'api/boats/boat/' + $('#Boats').val(),
+    async: false,
+    dataType: 'json',
+  }).responseJSON;
+
+  // create a trip object
+  var trip = {
+    status: 'ongoing',
+    boats: {
+      id: myboat.id,
+      no: myboat.no,
+      noOfSeats: myboat.noOfSeats,
+      minPrice: myboat.minPrice,
+      type: myboat.type,
+      available: false,
+      chargingTime: myboat.chargingTime,
+      accPrice: myboat.accPrice,
+    },
+    guest: {
+      id: myguest.id,
+      name: myguest.name,
+      idNo: myguest.idNo,
+      idType: myguest.idType,
+      phone: myguest.phone,
+    },
+  };
+  var jsonObject = JSON.stringify(trip);
+  $.ajax({
+    url: 'api/trips',
+    type: 'POST',
+    contentType: 'application/json',
+    data: jsonObject,
+    success: function () {
+      getAllOngoingTrips();
+      myAlert('A trip starts!', 'success');
+      clearAllfields();
+    },
+    error: function () {
+      myAlert('Invalid Input', 'error');
+    },
   });
 }
 // get a guest function
@@ -147,36 +163,36 @@ function getAguest(name) {
   });
 }
 
-// update boat function
+// // update boat function
 
-function updateBoat(boat) {
-  var boat = {
-    id: boat.id,
-    no: boat.no,
-    noOfSeats: boat.noOfSeats,
-    minPrice: boat.minPrice,
-    type: boat.type,
-    available: false,
-    chargingTime: boat.chargingTime,
-    accPrice: boat.accPrice,
-  };
+// function updateBoat(boats) {
+//   var boat = {
+//     id: boats.id,
+//     no: boats.no,
+//     noOfSeats: boats.noOfSeats,
+//     minPrice: boats.minPrice,
+//     type: boats.type,
+//     available: false,
+//     chargingTime: boats.chargingTime,
+//     accPrice: boats.accPrice,
+//   };
 
-  console.log('Type is' + boat.type.toString());
-  var jsonObject = JSON.stringify(boat);
+//   console.log('Type is' + boat.type.toString());
+//   var jsonObject = JSON.stringify(boat);
 
-  $.ajax({
-    url: 'api/boats/' + boat.id,
-    type: 'PUT',
-    data: jsonObject,
-    contentType: 'application/json',
-    success: function () {
-      console.log('a boat has been updated');
-    },
-    error: function () {
-      console.log('Sorry, something went wrong!');
-    },
-  });
-}
+//   $.ajax({
+//     url: 'api/boats/' + boat.id,
+//     type: 'PUT',
+//     data: jsonObject,
+//     contentType: 'application/json',
+//     success: function () {
+//       console.log('a boat has been updated');
+//     },
+//     error: function () {
+//       console.log('Sorry, something went wrong!');
+//     },
+//   });
+// }
 
 // get a boat by No
 function getDurationandPrice(trip) {
@@ -254,6 +270,21 @@ function stopTrip() {
   });
 }
 
+// function to load all guests to a select input
+function loadAllGuest() {
+  var returned_guests = '';
+  $.get('api/guests', function (guests) {
+    console.log(guests);
+    if (guests.length > 0) {
+      for (var i = 0; i < guests.length; i++) {
+        returned_guests +=
+          '<option value ="' + guests[i].id + '"> Name:  ' + guests[i].name + ' with ' + guests[i].phone + '  phone number</option>';
+        $('#guestNames').html(returned_guests);
+      }
+    }
+  });
+}
+
 // function to clear the text input
 function clearAllfields() {
   $('#noOfPersons').val('');
@@ -264,10 +295,6 @@ function clearAllfields() {
 // function to retrieve all ongoing trips
 function getAllOngoingTrips() {
   $.get('api/trips/ongoing', function (ongoing) {
-    // console.log(ongoing);
-    // //    count number of ongoingTrips
-    // var ongoingTripsCounter = ongoing.length;
-    // console.log(ongoingTripsCounter);
     $('#trips-list').empty();
     for (var i = 0; i < ongoing.length; i++) {
       const list = document.getElementById('trips-list');
@@ -286,6 +313,31 @@ function getAllOngoingTrips() {
   });
 }
 
+// function add a guest
+function saveGuest() {
+  if ($('#guestName').val() === '' || $('#phone').val() === '' || $('#idNumer').val() === '') {
+    myAlert('Please Enter the required guest data', 'error');
+  } else {
+    var guest = {
+      name: $('#guestName').val(),
+      idNo: $('#idNumer').val(),
+      idType: $('#idType').val(),
+      phone: $('#phone').val(),
+    };
+
+    var jsonObject = JSON.stringify(guest);
+    $.ajax({
+      url: 'api/guests/',
+      type: 'POST',
+      contentType: 'application/json',
+      data: jsonObject,
+      success: function (return_guest) {
+        loadAllGuest();
+        myAlert('Added successfully', 'success');
+      },
+    });
+  }
+}
 // function to show alert
 function myAlert(msg, className) {
   if (className === 'error') {

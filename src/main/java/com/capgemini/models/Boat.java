@@ -30,9 +30,9 @@ public class Boat implements Comparable<Boat>{
     @Column(name = "INCOME")
     private Double income=0.0;
     @Column(name = "MIN_PRICE")
-    private Double minPrice;
+    private Double minPrice=0.0;
     @Column(name = "ACTUAL_PRICE")
-    private Double accPrice;
+    private Double accPrice=0.0;
     @Column(name = "TOTAL_TIME")
     private Long totalTime = 0L;
     @Column(name = "CHARGING_TIME")
@@ -40,7 +40,7 @@ public class Boat implements Comparable<Boat>{
     @Column(name = "BOAT_STATUS")
     private String status = "Active";
 
-    @OneToMany(mappedBy = "boats",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "boats")
     @JsonIgnore
     private List<Trip> trips = new ArrayList<>();
 

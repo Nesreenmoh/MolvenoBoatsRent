@@ -113,8 +113,6 @@ p {
   margin: auto;
   padding: 0 2rem;
   overflow: hidden;
-  /* border-style: solid;
-  border-width: 2px; */
 }
 
 .text-center {
@@ -138,5 +136,9 @@ p {
   padding-left: 0.5rem;
 }
 .guestData h4 {
+  text-align: center;
+}
+
+h3 {
   text-align: center;
 }
