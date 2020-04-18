@@ -8,9 +8,9 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
 
     <script src="https://kit.fontawesome.com/a076d05399.js"></script>
-    <title>Boat page</title>
+    <title>Boats Overview</title>
     <link rel="stylesheet" href="/CSS/index.css" />
-    <script src="JS/tripsoverview.js"></script>
+    <script src="JS/boatsoverview.js"></script>
   </head>
   <body>
     <!-- navigation bar  -->
@@ -36,7 +36,8 @@
 
     <!-- main container  -->
     <div class="container">
-      <h3>Trips Overview</h3>
+      <br />
+      <h3>Boats Overview</h3>
       <div>
         <p id="total"></p>
       </div>
@@ -45,14 +46,14 @@
         <table class="table table-bordered table-stripped table-hover">
           <thead>
             <tr class="table-primary">
-              <th>Start Time</th>
-              <th>End Time</th>
-              <th>Status</th>
-              <th>Duration</th>
-              <th>Boat No.</th>
+              <th>Number</th>
+              <th>Seats</th>
+              <th>Type</th>
+              <th>Total Time (hr)</th>
+              <th>Income</th>
             </tr>
           </thead>
-          <tbody id="trips-list"></tbody>
+          <tbody id="boats-list"></tbody>
         </table>
       </div>
     </div>

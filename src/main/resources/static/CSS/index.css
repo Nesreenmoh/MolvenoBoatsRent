@@ -79,6 +79,7 @@ p {
   margin: 0.75rem 0;
   line-height: 50px;
   font-size: 18px;
+  font-family: 'Courier New', Courier, monospace;
 }
 
 .text {

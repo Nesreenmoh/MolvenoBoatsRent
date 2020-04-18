@@ -28,7 +28,7 @@ public class Boat implements Comparable<Boat>{
     @Column(name = "MAINTENANCE")
     private Boolean maintenance = false;
     @Column(name = "INCOME")
-    private Double income;
+    private Double income=0.0;
     @Column(name = "MIN_PRICE")
     private Double minPrice;
     @Column(name = "ACTUAL_PRICE")

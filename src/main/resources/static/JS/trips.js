@@ -180,6 +180,7 @@ function updateBoat(boat) {
 
 // get a boat by No
 function getDurationandPrice(trip) {
+  $('#guestDatabody').text('');
   var str = '';
   $.get('api/boats/boat/' + stop_boat_No, function (updatedboat) {
     console.log(updatedboat);
