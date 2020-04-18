@@ -33,7 +33,7 @@ public class TripService {
     Boat boat;
 
     // add trip
-    public void addTrip(Trip trip) {
+    public Trip addTrip(Trip trip) {
         trip.setStartTime(LocalDateTime.now());
         tripRepository.save(trip);
         Guest guest = trip.getGuest();
@@ -41,9 +41,8 @@ public class TripService {
         boat.setAvailable(false);
         boatRepository.save(boat);
         guestRepository.save(guest);
+        return trip;
     }
-
-
 
     //retrieve all trips
     public List<Trip> findAllTrips() {

@@ -53,8 +53,9 @@ public class TripController {
     }
     // request to add a trip
     @PostMapping
-    public void addTrip(@RequestBody Trip trip) {
-        tripService.addTrip(trip);
+    public Trip addTrip(@RequestBody Trip trip) {
+
+        return tripService.addTrip(trip);
     }
 
     // request to update a trip
