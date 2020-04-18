@@ -42,8 +42,11 @@ public class InitializationData implements CommandLineRunner {
         Boat boat4 = new Boat("1004", 6, "Electrical", 100.0, 400.0, 2);
         Boat boat5 = new Boat("1005", 8, "Electrical", 100.0, 400.0,1 );
         Boat boat6 = new Boat("1006", 4, "Raft", 100.0, 300.0, 0);
+        boat6.setAvailable(false);
         Boat boat7 = new Boat("1007", 6, "Raft", 100.0, 400.0, 0);
+        boat7.setAvailable(false);
         Boat boat8 = new Boat("1008", 8, "Raft", 100.0, 200.0, 0);
+        boat8.setAvailable(false);
 
         Trip trip1 = new Trip(LocalDateTime.of(2020,04,15, 5,1,45,36912), "ongoing");
         Trip trip2 = new Trip(LocalDateTime.of(2020,04,11, 7,1,45,36912), "ongoing");

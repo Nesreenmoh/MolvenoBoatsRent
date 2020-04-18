@@ -28,7 +28,7 @@ $(document).ready(function (e) {
 
   $('#guestdatabtn').click(function () {
     $('.modal-title').html('');
-    $('.modal-title').html('Warning');
+    $('.modal-title').html('Guest Data');
     $('.modal-header').css('background-color', 'rosybrown');
     $('#addguestmodal').show();
   });

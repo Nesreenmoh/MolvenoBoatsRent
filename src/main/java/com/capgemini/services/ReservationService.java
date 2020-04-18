@@ -24,8 +24,11 @@ public class ReservationService {
     @Autowired
     private BoatRepository boatRepository;
 
+    public static int counter=0;
+
     // add reservation controller
     public void addReservation(Reservation reservation) throws ParseException {
+
         // parse the reservation date to get the time
         String dataString = reservation.getResDate();
         SimpleDateFormat myFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
@@ -37,6 +40,20 @@ public class ReservationService {
         String startTime = new SimpleDateFormat("hh:mm a").format(date);
         String endTimeFormat = new SimpleDateFormat("hh:mm a").format(endTime);
 
+        //checking if the boat type is raft
+        if(reservation.getBoat().getType().equalsIgnoreCase("Raft")) {
+            counter++;
+            if(counter==4){
+                reservation.getBoat().setAvailable(true);
+                counter=0;
+            }
+            else
+            {
+                reservation.getBoat().setAvailable(false);
+            }
+        }
+
+        System.out.println("counter is "+counter);
         // setting  a time to the reservation fields
         reservation.setRes_start_time(startTime);
         reservation.setRes_end_time(endTimeFormat);
