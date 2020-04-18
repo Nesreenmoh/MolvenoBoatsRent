@@ -1,11 +1,11 @@
 package com.capgemini;
 
 import com.capgemini.controllers.GuestController;
-import com.capgemini.models.Boat;
+
 import com.capgemini.models.Guest;
-import com.capgemini.services.BoatService;
+
 import com.capgemini.services.GuestService;
-import com.fasterxml.jackson.core.JsonProcessingException;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -18,7 +18,6 @@ import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -29,12 +28,11 @@ import org.mockito.Mockito;
 
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.http.MediaType;
-import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 
-import java.lang.reflect.GenericArrayType;
+
 import java.util.ArrayList;
 import java.util.List;
 

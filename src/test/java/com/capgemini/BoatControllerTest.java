@@ -75,6 +75,31 @@ public class BoatControllerTest {
 
     }
 
+   // test the request of find boats by type
+    @Test
+    public void boatFindByTypeTestMethod() throws Exception {
+        Boat boat1 = new Boat("1009", 4,"Rowing", 100.0, 200.0, 0 );
+        Boat boat2 = new Boat("1010", 6,"Rowing", 100.0, 300.0, 0 );
+        List<Boat> rowingList= new ArrayList<>();
+        rowingList.add(boat1);
+        rowingList.add(boat2);
+        boatService.addBoat(boat1);
+        boatService.addBoat(boat2);
+        when(boatService.getBoatByType("rowing")).thenReturn(rowingList);
+
+        mockMvc.perform(get("/api/boats/type/rowing"))
+                .andDo(print())
+                .andExpect(jsonPath("$", Matchers.hasSize(2)))
+                .andExpect(jsonPath("$.[0].no", Matchers.is("1009")))
+                .andExpect(jsonPath("$.[0].noOfSeats", Matchers.is(4)))
+                .andExpect(jsonPath("$.[1].no", Matchers.is("1010")))
+                .andExpect(jsonPath("$.[1].noOfSeats", Matchers.is(6)))
+                .andExpect(MockMvcResultMatchers.status().isOk());
+        verify(boatService, times(1)).getBoatByType("rowing");
+
+    }
+
+    // testing POST request
     @Test
     public void boatPostTestMethod() throws Exception {
         Boat boat1 = new Boat("1009", 4,"Rowing", 100.0, 200.0, 0 );
@@ -117,5 +142,6 @@ public class BoatControllerTest {
         assertEquals("1010", boat1.getNo());
 
     }
+
 
 }
