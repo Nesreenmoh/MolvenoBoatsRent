@@ -152,85 +152,59 @@
           <ul class="inside">
             <li><a href="boatsoverview.html">Boats</a></li>
             <li><a href="tripsoverview.html">Trips</a></li>
-            <li><a href="reservationoverview.html">Reservations</a></li>
           </ul>
         </li>
       </ul>
     </nav>
     <!-- main container -->
     <div class="container">
-      <!-- <div class="sidebar">
-
-        <ul>
-          <li>
-            <a href="#"><i class="fa fa-ship"> BOATS </i></a>
-          </li>
-          <li>
-            <a href="#"><i class="fas fa-briefcase"> TRIPS</i></a>
-          </li>
-          <li>
-            <a href="#"><i class="fas fa-stream"> OVERVIEW</i></a>
-          </li>
-          <li>
-            <a href="#"><i class="fas fa-sliders-h"> ABOUT</i></a>
-          </li>
-        </ul>
-      </div> -->
-
       <!-- form for adding boat -->
       <div class="main">
-        <div class="section" style="padding-left: 3rem;">
-          <h2 style="text-align: center;">Boat Data</h2>
-          <div class="row">
-            <div class="col-md-8">
-              <form>
-                <fieldset>
-                  <div class="form-group">
-                    <label for=""> Boat Number </label>
-                    <input type="text" class="form-control" id="boatNo" placeholder="Boat No" required />
-                  </div>
-                  <div class="form-group">
-                    <label for=""> Number of Seats </label>
-                    <input type="number" class="form-control" id="seats" placeholder="Number of seats" min="1" required />
-                  </div>
-                  <div class="form-group">
-                    <label for=""> Boat Type </label>
-                    <select name="" id="boatType">
-                      <option value="Rowing"> Rowing </option>
-                      <option value="Electrical"> Electrical </option>
-                      <option value="Raft"> Raft </option>
-                    </select>
-                  </div>
-                  <div class="form-group">
-                    <label for=""> Charging Time - hours </label>
-                    <input type="number" class="form-control" id="chargingTime" placeholder="Charging Time" min="1" disabled />
-                  </div>
-                  <div class="form-group">
-                    <label for=""> Minimum Price for a boat </label>
-                    <input type="number" class="form-control" id="minPrice" placeholder="Minimum Price" min="1" required />
-                  </div>
-                  <div class="form-group">
-                    <label for=""> Actual Price for the day </label>
-                    <input type="number" class="form-control" id="accPrice" placeholder="Actual Price" min="1" required />
-                  </div>
-                  <div class="form-group">
-                    <button type="button" id="addBoat" class="btn btn-success">
-                      Add Boat
-                    </button>
-                    <button type="button" id="blockBoatbtn" class="btn btn-danger">
-                      Block Boat
-                    </button>
-                    <button type="button" id="unBlockbtn" class="btn btn-info">
-                      unBlock Boat
-                    </button>
-                  </div>
-                </fieldset>
-              </form>
-            </div>
+        <h2 style="text-align: center;">Boat Data</h2>
+        <form>
+          <div class="form-group">
+            <label for=""> Boat Number </label>
+            <input type="text" class="form-control" id="boatNo" placeholder="Boat No" required />
           </div>
-        </div>
+          <div class="form-group">
+            <label for=""> Number of Seats </label>
+            <input type="number" class="form-control" id="seats" placeholder="Number of seats" min="1" required />
+          </div>
+          <div class="form-group">
+            <label for=""> Boat Type </label>
+            <select name="" id="boatType">
+              <option value="Rowing"> Rowing </option>
+              <option value="Electrical"> Electrical </option>
+              <option value="Raft"> Raft </option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for=""> Charging Time - hours </label>
+            <input type="number" class="form-control" id="chargingTime" placeholder="Charging Time" min="1" disabled />
+          </div>
+          <div class="form-group">
+            <label for=""> Minimum Price for a boat </label>
+            <input type="number" class="form-control" id="minPrice" placeholder="Minimum Price" min="1" required />
+          </div>
+          <div class="form-group">
+            <label for=""> Actual Price for the day </label>
+            <input type="number" class="form-control" id="accPrice" placeholder="Actual Price" min="1" required />
+          </div>
+          <div class="form-group">
+            <button type="button" id="addBoat" class="btn btn-success">
+              Add Boat
+            </button>
+            <button type="button" id="blockBoatbtn" class="btn btn-danger">
+              Block Boat
+            </button>
+            <button type="button" id="unBlockbtn" class="btn btn-info">
+              unBlock Boat
+            </button>
+          </div>
+        </form>
+      </div>
         <!-- table of the boats data -->
-        <div class="col-md-12">
+        <div class="BoatsData">
           <div class="form-group" style="display: inline-block;">
             <label for="">Search(Boat No.) </label>
             <input type="text" class="form-control" id="searchNo" placeholder="Boat Number" required />

@@ -5,7 +5,6 @@ $(document).ready(function (e) {
   // event on the body of the table for update button
   $('#rowingBoat-list').on('click', function (e) {
     if (e.target.className === 'btn btn-info') {
-    }
       $('#updateModal').show();
       updated_boatId = e.target.parentNode.parentElement.parentElement.children[0].innerHTML;
       var boatNo = e.target.parentNode.parentElement.parentElement.children[1].innerHTML;
