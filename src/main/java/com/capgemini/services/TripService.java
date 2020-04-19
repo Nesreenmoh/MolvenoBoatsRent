@@ -11,11 +11,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
+import javax.swing.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.Timer;
 import java.util.stream.Collectors;
 
 @Service
@@ -78,28 +80,38 @@ public class TripService {
     }
 
 
-    // update a trip
+    // update/stop a trip
     public Trip updateTrip(Trip trip) {
         // set the end time for a trip
-        Boolean state;
-         if(trip.getBoats().getType().equalsIgnoreCase("electrical")){
-             state= false;
-             updateElectricalBoat(trip.getBoats());
-         }
-         else {
-             state=true;
-         }
-        System.out.println("state is "+ state);
         trip.setEndTime(LocalDateTime.now());
         // calculate the duration of this trip
         long diff = calculateDuration(trip);
         trip.setDuration(diff);
         trip.getBoats().setTotalTime(diff);
-        trip.getBoats().setAvailable(state);
-         if(trip.getBoats().getType().equalsIgnoreCase("Raft")){
-             trip.getBoats().setIncome(trip.getBoats().getAccPrice());
-         }
-        trip.getBoats().setIncome(diff  * trip.getBoats().getAccPrice());
+        //  check if the boat is electrical
+        Boolean state;
+        if (trip.getBoats().getType().equalsIgnoreCase("electrical")) {
+            if (trip.getBoats().getStatus().equalsIgnoreCase("Reserved")) {
+                trip.getBoats().setAvailable(false);
+                updateElectricalReservedBoat(trip.getBoats(), diff);
+            } else {
+                trip.getBoats().setAvailable(false);
+                updateElectricalBoat(trip.getBoats());
+            }
+
+        } else if (trip.getBoats().getStatus().equalsIgnoreCase("Reserved")) {
+            trip.getBoats().setAvailable(false);
+            updateReservedBoats(trip.getBoats(), diff);
+
+        } else {
+            trip.getBoats().setAvailable(true);
+        }
+
+        // check if the boat type is raft -- the price will be the actual
+        if (trip.getBoats().getType().equalsIgnoreCase("Raft")) {
+            trip.getBoats().setIncome(trip.getBoats().getAccPrice());
+        }
+        trip.getBoats().setIncome(diff * trip.getBoats().getAccPrice());
         tripRepository.save(trip);
         boatRepository.save(trip.getBoats());
         return trip;
@@ -121,34 +133,62 @@ public class TripService {
         List<Trip> allTrips = tripRepository.findAll();
         double totalIncome = 0.0;
         for (int i = 0; i < allTrips.size(); i++) {
-            if(allTrips.get(i).getBoats().getIncome()!= null){
+            if (allTrips.get(i).getBoats().getIncome() != null) {
                 totalIncome += allTrips.get(i).getBoats().getIncome();
             }
         }
         return totalIncome;
-}
+    }
+
+    //update electrical reserved boat after the trip is done
+    public void updateElectricalReservedBoat(Boat boat, Long duration) {
+        int chargingTime = boat.getChargingTime();
+        Timer myTimer = new Timer();
+        myTimer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                boat.setAvailable(true);
+                boat.setStatus("Charging");
+                boatRepository.save(boat);
+
+            }// run this function after a charging time of the boat in millieseconds
+        }, ((chargingTime + duration +1 ) * 3600000));
+    }
+
+    // update reserved boat after the trip
+    public void updateReservedBoats(Boat boat, Long duration){
+        Timer myTimer = new Timer();
+        myTimer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                boat.setAvailable(true);
+                boat.setStatus("Charging");
+                boatRepository.save(boat);
+
+            }// run this function after a charging time of the boat in millieseconds
+        }, ((duration +1 ) * 3600000));
+    }
+
+    // update electrical boat and set the availability after the charging time
+    public void updateElectricalBoat(Boat boat) {
+        int chargingTime = boat.getChargingTime();
+        System.out.println(chargingTime);
+        // define a time to set a current time + charging time to change the availability to true
+        Timer myTimer = new Timer();
+
+        myTimer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                boat.setAvailable(true);
+                boat.setStatus("Charging");
+                boatRepository.save(boat);
+
+            }// run this function after a charging time of the boat in millieseconds
+        }, (chargingTime * 3600000));
+    }
 
 
-// update electrical boat and set the availability after the charging time
-public void updateElectricalBoat(Boat boat){
-      int  chargingTime = boat.getChargingTime();
-    System.out.println(chargingTime);
-    // define a time to set a current time + charging time to change the availability to true
-    Timer myTimer = new Timer();
-
-    myTimer.schedule(new TimerTask() {
-        @Override
-        public void run() {
-            boat.setAvailable(true);
-            boat.setStatus("Charging");
-            boatRepository.save(boat);
-
-        }// run this function after a charging time of the boat in millieseconds
-    }, (chargingTime *3600000) );
-}
-
-
- // retrieve used boats No for all trips
+    // retrieve used boats No for all trips
     public List<Boat> getUsedBoatsForAllTrip() {
         List<Trip> trips = tripRepository.findAll();
         List<Boat> usedBoats = new ArrayList<>();
@@ -165,7 +205,7 @@ public void updateElectricalBoat(Boat boat){
                 usedBoats.add(trips.get(i).getBoats());
             }
         }
-        System.out.println("Used boats for all trips "+ usedBoats);
+        System.out.println("Used boats for all trips " + usedBoats);
         return usedBoats;
     }
 

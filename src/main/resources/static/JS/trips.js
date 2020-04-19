@@ -1,4 +1,4 @@
-var stop_trip_id, stop_boat_No, stop_type, stopped_guest, start_time;
+var stop_trip_id, stop_boat_No, stop_type, stopped_guest, start_time, guestname;
 $(document).ready(function () {
   getAllOngoingTrips();
   loadAllGuest();
@@ -28,8 +28,7 @@ $(document).ready(function () {
       start_time = e.target.parentNode.parentElement.parentElement.children[1].innerHTML;
       stop_boat_No = e.target.parentNode.parentElement.parentElement.children[2].innerHTML;
       stop_type = e.target.parentNode.parentElement.parentElement.children[3].innerHTML;
-      var guestname = e.target.parentNode.parentElement.parentElement.children[4].innerHTML;
-      getAguest(guestname);
+      guestname = e.target.parentNode.parentElement.parentElement.children[4].innerHTML;
       $('.modal-title').html('');
       $('.modal-title').html('Stop Trip');
       $('.modal-header').css('background-color', 'red');
@@ -131,6 +130,7 @@ function addTrip() {
       available: false,
       chargingTime: myboat.chargingTime,
       accPrice: myboat.accPrice,
+      status: myboat.status,
     },
     guest: {
       id: myguest.id,
@@ -156,12 +156,12 @@ function addTrip() {
     },
   });
 }
-// get a guest function
-function getAguest(name) {
-  $.get('api/guests/name/' + name, function (guest) {
-    stopped_guest = guest;
-  });
-}
+// // get a guest function
+// function getAguest(name) {
+//   $.get('api/guests/name/' + name, function (guest) {
+//     stopped_guest = guest;
+//   });
+// }
 
 // // update boat function
 
@@ -228,45 +228,58 @@ function getDurationandPrice(trip) {
 }
 // function to stop a trip
 function stopTrip() {
-  $.get('api/boats/boat/' + stop_boat_No, function (stopped_boat) {
-    var trip = {
-      id: stop_trip_id,
-      startTime: start_time,
-      status: 'Ended',
-      guest: {
-        id: stopped_guest.id,
-        name: stopped_guest.name,
-        idType: stopped_guest.idType,
-        idNo: stopped_guest.idNo,
-        phone: stopped_guest.phone,
-      },
-      boats: {
-        id: stopped_boat.id,
-        no: stopped_boat.no,
-        noOfSeats: stopped_boat.noOfSeats,
-        type: stopped_boat.type,
-        maintenance: false,
-        minPrice: 100.0,
-        accPrice: 200.0,
-        chargingTime: 0,
-        status: 'Active',
-      },
-    };
-    var jsonObject = JSON.stringify(trip);
-    $.ajax({
-      url: 'api/trips/updatetrip/' + stop_trip_id,
-      type: 'PUT',
-      contentType: 'application/json',
-      data: jsonObject,
-      success: function (trip) {
-        getDurationandPrice(trip);
-        $('#guestDataModel').show();
-        getAllOngoingTrips();
-      },
-      error: function () {
-        myAlert('Invalid Input', 'error');
-      },
-    });
+  // get the boat  data
+  stopped_boat = $.ajax({
+    url: 'api/boats/boat/' + stop_boat_No,
+    async: false,
+    dataType: 'json',
+  }).responseJSON;
+
+  //get guest data
+  stopped_guest = $.ajax({
+    url: 'api/guests/name/' + guestname,
+    async: false,
+    dataType: 'json',
+  }).responseJSON;
+
+  // create trip object
+  var trip = {
+    id: stop_trip_id,
+    startTime: start_time,
+    status: 'Ended',
+    guest: {
+      id: stopped_guest.id,
+      name: stopped_guest.name,
+      idType: stopped_guest.idType,
+      idNo: stopped_guest.idNo,
+      phone: stopped_guest.phone,
+    },
+    boats: {
+      id: stopped_boat.id,
+      no: stopped_boat.no,
+      noOfSeats: stopped_boat.noOfSeats,
+      type: stopped_boat.type,
+      maintenance: stopped_boat.maintenance,
+      minPrice: stopped_boat.minPrice,
+      accPrice: stopped_boat.accPrice,
+      chargingTime: stopped_boat.chargingTime,
+      status: stopped_boat.status,
+    },
+  };
+  var jsonObject = JSON.stringify(trip);
+  $.ajax({
+    url: 'api/trips/updatetrip/' + stop_trip_id,
+    type: 'PUT',
+    contentType: 'application/json',
+    data: jsonObject,
+    success: function (trip) {
+      getDurationandPrice(trip);
+      $('#guestDataModel').show();
+      getAllOngoingTrips();
+    },
+    error: function () {
+      myAlert('Invalid Input', 'error');
+    },
   });
 }
 
