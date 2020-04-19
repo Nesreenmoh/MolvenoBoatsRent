@@ -108,9 +108,10 @@ p {
 .py-3 {
   padding: 3rem 0;
 }
-.myContainer {
-  max-width: 800px;
-  margin: auto;
+.container {
+  max-width: 900px;
+  margin-top: 2rem;
+  border: 1px solid #008cba;
   overflow: hidden;
 }
 
@@ -125,7 +126,9 @@ p {
 #stopTripModel,
 #guestDataModel,
 #addguestmodal,
-.CancelledList {
+.CancelledList,
+#guestupdateModal,
+#confirm {
   display: none;
 }
 .guestData {

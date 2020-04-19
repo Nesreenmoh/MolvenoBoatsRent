@@ -16,25 +16,35 @@ public class GuestController {
 
     // request to get all guests
     @GetMapping
-    public List<Guest> getAllGuests(){
-       return guestService.findAllGuest();
+    public List<Guest> getAllGuests() {
+        return guestService.findAllGuest();
     }
 
     // request to get one guest
     @GetMapping("/{id}")
-    public Guest getOneGuest(@PathVariable Long id){
+    public Guest getOneGuest(@PathVariable Long id) {
         return guestService.findOneGuest(id);
     }
 
     @GetMapping("/name/{name}")
-    public Guest getOneByname(@PathVariable String name){
-       return guestService.findOneByName(name);
+    public Guest getOneByname(@PathVariable String name) {
+        return guestService.findOneByName(name);
     }
 
     @PostMapping
-    public Guest addGuest(@RequestBody Guest guest){
+    public Guest addGuest(@RequestBody Guest guest) {
 
         return guestService.addGuest(guest);
+    }
+
+    @PutMapping("/{id}")
+    public void updateGuest(@RequestBody Guest guest, @PathVariable Long id) {
+        guestService.updateGuest(guest, id);
+    }
+
+    @DeleteMapping("/{id}")
+    public String deleteGuest(@PathVariable Long id) {
+       return guestService.deleteGuest(id);
     }
 
 }

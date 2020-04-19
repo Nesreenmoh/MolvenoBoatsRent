@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css" />
+    <link rel="stylesheet" href="CSS/index.css " />
+
+    <title>Guest page</title>
+  </head>
+  <body>
+    <!-- Delete Alert Modal section -->
+    <div id="confirm" class="modal" tabindex="-1" role="dialog">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Warning</h5>
+            <button type="button" class="closeBtn" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <p>Are you sure you want to delete?</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" id="yesBtn" class="btn btn-primary">
+              Yes
+            </button>
+            <button type="button" id="closeConfirm" class="btn btn-secondary" data-dismiss="modal">
+              No
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--  Update modal -->
+    <div id="guestupdateModal" class="modal">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header" style="background-color: #138496;">
+            <h5 class="title">Update Guest Data</h5>
+            <button type="button" id="updateClose" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form>
+              <div class="form-group">
+                <label for="guestFirstNamelable"> Name </label>
+                <input type="text" class="form-control" id="editName" placeholder="First Name" required />
+              </div>
+              <div class="form-group">
+                <label for=""> ID Type </label>
+                <select name="" id="editidType">
+                  <option value="ID"> ID </option>
+                  <option value="DrivingLicense"> Driving License </option>
+                  <option value="Passport"> Passport </option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for=""> ID number </label>
+                <input type="text" class="form-control" id="editidNumer" placeholder="ID number" required />
+              </div>
+              <div class="form-group">
+                <label for=""> Phone </label>
+                <input type="text" class="form-control" id="editphone" placeholder=" Guest Phone" required />
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" id="save" class="btn btn-primary">
+              Save
+            </button>
+            <button type="button" id="closeSmallbtn" class="btn btn-secondary">
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Error/Success Modal Messages -->
+    <div id="error" class="modal" tabindex="-1" role="dialog">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Warning</h5>
+            <button type="button" id="closeError" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <p id="message"></p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" id="closeOK" class="btn btn-secondary" data-dismiss="modal">
+              OK
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- navigation bar -->
+    <nav id="myNavbar">
+      <h1 id="logo">
+        <span class="text"> <i class="fa fa-ship"></i> Molveno </span> Boat Rent
+      </h1>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="reservation.html">Reservation</a></li>
+        <li><a href="trip.html">Trip</a></li>
+        <li><a href="boats.html">Boat</a></li>
+        <li><a href="guests.html">Guest</a></li>
+        <li>
+          <a href="#">Overview</a>
+          <ul class="inside">
+            <li><a href="boatsoverview.html">Boats</a></li>
+            <li><a href="tripsoverview.html">Trips</a></li>
+          </ul>
+        </li>
+      </ul>
+    </nav>
+    <!-- Main container form and the table -->
+    <div class="container">
+      <h2 style="text-align: center;">Guest Data</h2>
+      <div class="row">
+        <div class="col-md-12">
+          <form>
+            <div class="form-group">
+              <label for="guestFirstNamelable"> Name </label>
+              <input type="text" class="form-control" id="guestName" placeholder="Name" required />
+            </div>
+            <div class="form-group">
+              <label for=""> ID Type </label>
+              <select name="" id="idType">
+                <option value="ID"> ID </option>
+                <option value="DrivingLicense"> Driving License </option>
+                <option value="Passport"> Passport </option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for=""> ID number </label>
+              <input type="text" class="form-control" id="idNumer" placeholder="ID number" required />
+            </div>
+            <div class="form-group">
+              <label for=""> Phone </label>
+              <input type="text" class="form-control" id="phone" placeholder=" Guest Phone" required />
+            </div>
+            <div class="form-group">
+              <button type="button" id="addGuest" class="btn btn-info">
+                Add Guest
+              </button>
+            </div>
+          </form>
+        </div>
+        <div class="col-md-12">
+          <table id="guestContainer" class="table table-bordered table-striped table-hover">
+            <thead>
+              <tr class="table-primary">
+                <th>ID</th>
+                <th>Name</th>
+                <th>ID Type</th>
+                <th>ID Number</th>
+                <th>Telephone</th>
+                <th>Delete</th>
+                <th>Update</th>
+              </tr>
+            </thead>
+          </table>
+        </div>
+      </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+
+    <script src="JS/guests.js"></script>
+  </body>
+</html>

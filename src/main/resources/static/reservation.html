@@ -3,15 +3,11 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment-with-locales.min.js"></script>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" />
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
 
-    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="CSS/index.css " />
+
     <title>Reservation page</title>
-    <link rel="stylesheet" href="/CSS/index.css" />
-    <script src="JS/reservation.js"></script>
   </head>
   <body>
     <!-- Error/Success Modal Messages -->
@@ -60,7 +56,7 @@
       </div>
     </div>
 
-    <!-- Guest Details Modal Messages -->
+    <!-- Guest Details Modal Messages
     <div id="addguestmodal" class="modal">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -90,7 +86,7 @@
           </div>
         </div>
       </div>
-    </div>
+    </div> -->
     <!-- navigation bar -->
     <nav id="myNavbar">
       <h1 id="logo">
@@ -101,6 +97,7 @@
         <li><a href="reservation.html">Reservation</a></li>
         <li><a href="trip.html">Trip</a></li>
         <li><a href="boats.html">Boat</a></li>
+        <li><a href="guests.html">Guest</a></li>
         <li>
           <a href="#">Overview</a>
           <ul class="inside">
@@ -116,7 +113,7 @@
       <!-- Reservation Form  -->
       <div class="reservationForm">
         <br />
-        <h5>Reservation Form</h5>
+        <h2 style="text-align: center;">Reservation Form</h2>
         <br />
         <form>
           <div class="form-group">
@@ -142,9 +139,6 @@
           <div class="form-group">
             <label for=""> Guest name : </label>
             <select id="guestNames"> </select>
-            <button type="button" id="guestdatabtn" class="btn btn-success">
-              New Guest
-            </button>
           </div>
           <div class="form-group">
             <button type="button" id="reservationbtn" class="btn btn-success">
@@ -152,9 +146,6 @@
             </button>
             <button type="button" id="checkCancelreservationbtn" class="btn btn-success">
               Check Cancelled Reservation
-            </button>
-            <button type="button" id="checkreservationbtn" class="btn btn-success">
-              Fetch Reservation
             </button>
           </div>
         </form>
@@ -197,5 +188,11 @@
         </table>
       </div>
     </div>
+
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+
+    <script src="JS/reservation.js"></script>
   </body>
 </html>

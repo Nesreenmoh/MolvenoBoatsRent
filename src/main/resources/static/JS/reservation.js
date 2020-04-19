@@ -125,14 +125,6 @@ function loadAllGuest() {
     }
   });
 }
-// function to check the validation of the fields
-// function checkfields() {
-//   const valid = isValid($('#resDate').val());
-//   console.log(valid);
-//   if ($('#resTime').val() === '' || $('#duration').val() === '' || valid === false) {
-//     myAlert('Please fill in the required data!', 'error');
-//   }
-// }
 
 // function to validate the date
 

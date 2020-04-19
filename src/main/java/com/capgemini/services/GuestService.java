@@ -37,5 +37,16 @@ public class GuestService {
         return guestRepository.findOneByName(name);
     }
 
+    // update Guest data
+    public void updateGuest(Guest guest, Long id){
+     guestRepository.save(guest);
+    }
+
+    // delete a guest
+
+    public String deleteGuest(Long id){
+        guestRepository.deleteById(id);
+        return "Deleted";
+    }
 
 }

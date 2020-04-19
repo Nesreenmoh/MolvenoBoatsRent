@@ -12,12 +12,15 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -92,5 +95,45 @@ public class GuestControllerTest {
                 .andExpect(MockMvcResultMatchers.status().isOk());
         verify(guestService, times(1)).findAllGuest();
     }
+
+
+    // test update Guest
+    @Test
+    public void updateGuestTest() throws Exception {
+        Guest guest1 = new Guest("Mohammed", "ID", "53453463","12345" );
+        guest1.setId(13L);
+        guestService.addGuest(guest1);
+
+        when(guestService.findOneGuest(13L)).thenReturn(guest1);
+        guest1.setName("Nesreen");
+        ObjectMapper mapper = new ObjectMapper();
+        String json = mapper.writeValueAsString(guest1);
+
+        MvcResult mvcResult = this.mockMvc.perform(MockMvcRequestBuilders.put("/api/guests/13")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(json)).andReturn();
+
+        int status = mvcResult.getResponse().getStatus();
+        assertEquals("Nesreen", guest1.getName());
+        assertEquals(200, status);
+    }
+
+    // delete  guest request test
+
+    @Test
+    public void deleteGuestRequestTest() throws Exception{
+        Guest guest1 = new Guest("Mohammed", "ID", "53453463","12345" );
+        guest1.setId(13L);
+        guestService.addGuest(guest1);
+        when(guestService.deleteGuest(13L)).thenReturn("A record has been Deleted");
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.delete("/api/guests/13")).andReturn();
+        int status = mvcResult.getResponse().getStatus();
+        assertEquals(200, status);
+        String content=  mvcResult.getResponse().getContentAsString();
+        System.out.println(content);
+
+
+    }
+
 
 }
