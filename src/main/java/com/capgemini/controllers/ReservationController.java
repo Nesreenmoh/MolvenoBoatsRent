@@ -22,6 +22,7 @@ public class ReservationController {
 
     @GetMapping("/{resId}")
     public Reservation getOneById(@PathVariable Long resId){
+
         return reservationService.findOneByID(resId);
     }
 

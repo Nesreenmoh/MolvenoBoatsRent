@@ -77,49 +77,56 @@
       </div>
     </div>
 
-    <!-- Guest Details Modal Messages
-    <div id="addguestmodal" class="modal">
+    Guest Details Modal Messages
+    <div id="reservedBoats" class="modal">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header" style="background-color: rosybrown;">
-            <h5 class="modal-title">Guest Details</h5>
-            <button type="button" id="GuestcloseError" class="close" data-dismiss="modal" aria-label="Close">
+            <h5 class="modal-title">Reserved Trip</h5>
+            <button type="button" id="reservedcloseError" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
           <div class="modal-body">
             <div class="form-group">
+              <label for=""> Reservation ID : </label>
+              <input type="number" class="form-control" id="reservationId" placeholder="Reservation ID" />
+            </div>
+            <div class="form-group">
+              <button id="checkReservedTrips">Check Reserved Trip</button>
+            </div>
+            <div class="form-group">
+              <label for=""> Boat No </label>
+              <input type="text" class="form-control" id="reservedBoatNo" placeholder="Boat No" disabled />
+            </div>
+            <div class="form-group">
+              <label for=""> Boat Type </label>
+              <input type="text" class="form-control" id="reservedBoatType" placeholder="Boat Type" disabled />
+            </div>
+            <div class="form-group">
+              <label for=""> Start Time </label>
+              <input type="text" class="form-control" id="reservedStartTime" placeholder="Start Time" disabled />
+            </div>
+            <div class="form-group">
+              <label for=""> Duration </label>
+              <input type="text" class="form-control" id="reservedBoatsDuration" placeholder=" Trip Duration" disabled />
+            </div>
+            <div class="form-group">
               <label for=""> Guest Name </label>
-              <input type="text" class="form-control" id="guestName" placeholder="Guest" />
-            </div>
-            <div class="form-group">
-              <label for=""> ID Type </label>
-              <select name="" id="idType">
-                <option value="Personal Identification"> ID </option>
-                <option value="DrivingLicense"> Driving License </option>
-                <option value="Passport"> Passport </option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label for=""> ID number </label>
-              <input type="text" class="form-control" id="idNumer" placeholder="ID number" required />
-            </div>
-            <div class="form-group">
-              <label for=""> Phone </label>
-              <input type="text" class="form-control" id="phone" placeholder=" Guest Phone" required />
+              <input type="text" class="form-control" id="reservedGuestName" placeholder=" Guest Name" disabled />
             </div>
           </div>
           <div class="modal-footer">
-            <button type="button" id="GuestModeldatasave" class="btn btn-secondary" data-dismiss="modal">
-              Save
+            <button type="button" id="reservedBoatsSave" class="btn btn-secondary" data-dismiss="modal">
+              Start Trip
             </button>
-            <button type="button" id="GuestModeldateclose" class="btn btn-secondary" data-dismiss="modal">
+            <button type="button" id="reservedBoatsClose" class="btn btn-secondary" data-dismiss="modal">
               Cancel
             </button>
           </div>
         </div>
       </div>
-    </div> -->
+    </div>
     <!-- navbar -->
     <nav id="myNavbar">
       <h1 id="logo">
@@ -161,6 +168,9 @@
           <div class="form-group">
             <button type="button" id="checkbtn" class="btn btn-info">
               Check for Boats
+            </button>
+            <button type="button" id="checkReservedbtn" class="btn btn-info">
+              Check for Reserved Boats
             </button>
           </div>
           <div class="checkboxes" style="display: inline-block;">

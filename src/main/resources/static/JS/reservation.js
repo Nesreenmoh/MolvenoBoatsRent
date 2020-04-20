@@ -104,7 +104,7 @@ function saveGuest() {
       success: function (return_guest) {
         loadAllGuest();
         myAlert('Added successfully', 'success');
-        myguest = return_guest.id;
+        myguest = return_guest;
         console.log('guest id is ' + myguest);
       },
     });
@@ -171,12 +171,22 @@ function getBoatByNo() {
 // function to add a reservation
 
 function addReservation(boats) {
+  guest = $.ajax({
+    url: 'api/guests/' + Number($('#guestNames').val()),
+    async: false,
+    dataType: 'json',
+  }).responseJSON;
+
   var reservation = {
     resDate: $('#resDate').val(),
     duration: $('#duration').val(),
     status: 'Active',
     guest: {
-      id: $('#guestNames').val(),
+      id: guest.id,
+      name: guest.name,
+      idType: guest.idType,
+      idNo: guest.idNo,
+      phone: guest.phone,
     },
     boat: {
       id: boats.id,
@@ -187,7 +197,6 @@ function addReservation(boats) {
       minPrice: boats.minPrice,
       accPrice: boats.accPrice,
       chargingTime: boats.chargingTime,
-      status: 'Reserved',
     },
   };
   console.log(reservation);

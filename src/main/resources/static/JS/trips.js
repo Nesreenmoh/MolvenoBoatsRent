@@ -72,6 +72,29 @@ $(document).ready(function () {
     saveGuest();
     $('#addguestmodal').hide();
   });
+
+  // events on the modal of Reserved Boats/trips
+  $('#reservedcloseError').click(function (e) {
+    $('#reservedBoats').hide();
+  });
+  $('#reservedBoatsClose').click(function (e) {
+    $('#reservedBoats').hide();
+  });
+
+  //event on the check Reserved Trips
+  $('#checkReservedbtn').click(function (e) {
+    $('#reservedBoats').show();
+  });
+
+  $('#checkReservedTrips').click(function (e) {
+    if ($('#reservationId').val() === '') {
+      myAlert('Please Enter the reservation Id', 'error');
+    }
+    $('.modal-title').html('');
+    $('.modal-title').html('Reserved Trip');
+    $('.modal-header').css('background-color', 'orange');
+    getReservedTrip();
+  });
 });
 
 // function to check for suitable boats
@@ -102,7 +125,6 @@ function checkforSuitableBoats() {
 
 // add trip function
 function addTrip() {
-  console.log('guest id is ' + $('#guestNames').val());
   // get the guest data
   myguest = $.ajax({
     url: 'api/guests/' + Number($('#guestNames').val()),
@@ -110,7 +132,6 @@ function addTrip() {
     dataType: 'json',
   }).responseJSON;
 
-  // console.log('my guest ' + myguest.id);
   // get the boat  data
   myboat = $.ajax({
     url: 'api/boats/boat/' + $('#Boats').val(),
@@ -350,6 +371,24 @@ function saveGuest() {
       },
     });
   }
+}
+
+// function to get reserved boats
+
+function getReservedTrip() {
+  $.get('api/reservations/' + Number($('#reservationId').val()), function (reserved_trip) {
+    console.log('Reserved trip is' + reserved_trip.length);
+    if (reserved_trip) {
+      $('#reservedBoatNo').val(reserved_trip.boat.id);
+      $('#reservedBoatType').val(reserved_trip.boat.type);
+      $('#reservedStartTime').val(reserved_trip.resDate);
+      $('#reservedBoatsDuration').val(reserved_trip.duration);
+      $('#reservedGuestName').val(reserved_trip.guest.name);
+    } else {
+      $('#reservedBoats').hide();
+      myAlert('Nothing found!', 'error');
+    }
+  });
 }
 // function to show alert
 function myAlert(msg, className) {
