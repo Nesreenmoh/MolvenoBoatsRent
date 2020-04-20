@@ -28,6 +28,7 @@ public class GuestController {
 
     @GetMapping("/name/{name}")
     public Guest getOneByname(@PathVariable String name) {
+
         return guestService.findOneByName(name);
     }
 

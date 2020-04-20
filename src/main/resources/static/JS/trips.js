@@ -81,11 +81,12 @@ $(document).ready(function () {
     $('#reservedBoats').hide();
   });
 
-  //event on the check Reserved Trips
+  //event on the check Reserved Trips button
   $('#checkReservedbtn').click(function (e) {
     $('#reservedBoats').show();
   });
 
+  // event on the check Reserved Trips modal
   $('#checkReservedTrips').click(function (e) {
     if ($('#reservationId').val() === '') {
       myAlert('Please Enter the reservation Id', 'error');
@@ -94,6 +95,10 @@ $(document).ready(function () {
     $('.modal-title').html('Reserved Trip');
     $('.modal-header').css('background-color', 'orange');
     getReservedTrip();
+  });
+
+  $('#reservedBoatsSave').click(function () {
+    addReservedTrip();
   });
 });
 
@@ -177,43 +182,64 @@ function addTrip() {
     },
   });
 }
-// // get a guest function
-// function getAguest(name) {
-//   $.get('api/guests/name/' + name, function (guest) {
-//     stopped_guest = guest;
-//   });
-// }
 
-// // update boat function
+// add Reserved Trip
+function addReservedTrip() {
+  // get the guest data
+  myguest = $.ajax({
+    url: 'api/guests/name/' + $('#reservedGuestName').val(),
+    async: false,
+    dataType: 'json',
+  }).responseJSON;
+  console.log('guest id is' + myguest.id);
 
-// function updateBoat(boats) {
-//   var boat = {
-//     id: boats.id,
-//     no: boats.no,
-//     noOfSeats: boats.noOfSeats,
-//     minPrice: boats.minPrice,
-//     type: boats.type,
-//     available: false,
-//     chargingTime: boats.chargingTime,
-//     accPrice: boats.accPrice,
-//   };
+  // get the boat  data
+  myboat = $.ajax({
+    url: 'api/boats/boat/' + $('#reservedBoatNo').val(),
+    async: false,
+    dataType: 'json',
+  }).responseJSON;
+  console.log('Myboat id is' + myboat.id);
 
-//   console.log('Type is' + boat.type.toString());
-//   var jsonObject = JSON.stringify(boat);
-
-//   $.ajax({
-//     url: 'api/boats/' + boat.id,
-//     type: 'PUT',
-//     data: jsonObject,
-//     contentType: 'application/json',
-//     success: function () {
-//       console.log('a boat has been updated');
-//     },
-//     error: function () {
-//       console.log('Sorry, something went wrong!');
-//     },
-//   });
-// }
+  // create a trip object
+  var trip = {
+    status: 'ongoing',
+    boats: {
+      id: myboat.id,
+      no: myboat.no,
+      noOfSeats: myboat.noOfSeats,
+      minPrice: myboat.minPrice,
+      type: myboat.type,
+      available: false,
+      chargingTime: myboat.chargingTime,
+      accPrice: myboat.accPrice,
+      status: myboat.status,
+    },
+    guest: {
+      id: myguest.id,
+      name: myguest.name,
+      idNo: myguest.idNo,
+      idType: myguest.idType,
+      phone: myguest.phone,
+    },
+  };
+  var jsonObject = JSON.stringify(trip);
+  $.ajax({
+    url: 'api/trips',
+    type: 'POST',
+    contentType: 'application/json',
+    data: jsonObject,
+    success: function () {
+      $('#reservedBoats').hide();
+      getAllOngoingTrips();
+      myAlert('A trip starts!', 'success');
+      clearAllfields();
+    },
+    error: function () {
+      myAlert('Invalid Input', 'error');
+    },
+  });
+}
 
 // get a boat by No
 function getDurationandPrice(trip) {
@@ -325,6 +351,11 @@ function clearAllfields() {
   $('#idNumer').val('');
   $('#guestName').val('');
   $('#phone').val('');
+  $('#reservedGuestName').val('');
+  $('#reservedBoatsDuration').val('');
+  $('#reservedStartTime').val('');
+  $('#reservedBoatType').val('');
+  $('#reservedBoatNo').val('');
 }
 // function to retrieve all ongoing trips
 function getAllOngoingTrips() {
@@ -377,9 +408,8 @@ function saveGuest() {
 
 function getReservedTrip() {
   $.get('api/reservations/' + Number($('#reservationId').val()), function (reserved_trip) {
-    console.log('Reserved trip is' + reserved_trip.length);
     if (reserved_trip) {
-      $('#reservedBoatNo').val(reserved_trip.boat.id);
+      $('#reservedBoatNo').val(reserved_trip.boat.no);
       $('#reservedBoatType').val(reserved_trip.boat.type);
       $('#reservedStartTime').val(reserved_trip.resDate);
       $('#reservedBoatsDuration').val(reserved_trip.duration);
