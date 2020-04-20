@@ -148,7 +148,7 @@ public class TripService {
             @Override
             public void run() {
                 boat.setAvailable(true);
-                boat.setStatus("Charging");
+                boat.setStatus("Active");
                 boatRepository.save(boat);
 
             }// run this function after a charging time of the boat in millieseconds
@@ -162,7 +162,7 @@ public class TripService {
             @Override
             public void run() {
                 boat.setAvailable(true);
-                boat.setStatus("Charging");
+                boat.setStatus("Active");
                 boatRepository.save(boat);
 
             }// run this function after a charging time of the boat in millieseconds
