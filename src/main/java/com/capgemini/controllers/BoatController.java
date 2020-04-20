@@ -88,4 +88,9 @@ public class BoatController {
         boatService.updateBoat(boat);
     }
 
+    @DeleteMapping("/{id}")
+    public String deleteBoat(@PathVariable Long id){
+        boatService.deleteBoat(id);
+        return "Deleted!";
+    }
 }

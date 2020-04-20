@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" />
+     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css" />
     <link rel="stylesheet" href="CSS/index.css " />
 
     <title>Boat page</title>
@@ -134,6 +135,31 @@
         </div>
       </div>
     </div>
+
+     <!-- unblock a boat from maintenance  -->
+    <div id="deletemodel" class="modal">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header" style="background-color: red;">
+            <h5 class="modal-title">Warning</h5>
+            <button type="button" id="deletecloseError" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+           <p> Are you sure you want to delete?</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" id="yesDeleteModal" class="btn btn-secondary" data-dismiss="modal">
+              Yes
+            </button>
+            <button type="button" id="closeDeleteModal" class="btn btn-secondary" data-dismiss="modal">
+              No
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
     <!-- navigation bar  -->
     <nav id="myNavbar">
       <h1 id="logo">
@@ -203,12 +229,12 @@
       </div>
         <!-- table of the boats data -->
         <div class="BoatsData">
-          <div class="form-group" style="display: inline-block;">
+          <!-- <div class="form-group" style="display: inline-block;">
             <label for="">Search(Boat No.) </label>
             <input type="text" class="form-control" id="searchNo" placeholder="Boat Number" required />
-          </div>
+          </div> -->
           <h4>Boats Data</h4>
-          <table class="table table-bordered table-striped table-hover">
+          <table id="rowingBoat-list" class="table table-bordered table-striped table-hover">
             <thead>
               <tr class="table-primary">
                 <th>ID</th>
@@ -219,10 +245,11 @@
                 <th>Actual_price</th>
                 <th>Charging Time</th>
                 <th>Status</th>
+                <th>Delete</th>
                 <th>Update</th>
               </tr>
             </thead>
-            <tbody id="rowingBoat-list"></tbody>
+            <!-- <tbody ></tbody> -->
           </table>
         </div>
       </div>
@@ -230,6 +257,7 @@
 
       <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
     <script src="https://kit.fontawesome.com/a076d05399.js"></script>
 
     <script src="JS/boats.js"></script>

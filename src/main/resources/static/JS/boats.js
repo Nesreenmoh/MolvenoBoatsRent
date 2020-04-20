@@ -1,26 +1,86 @@
 var updated_boatId;
+var boatDataTable;
+var deleted_boatId;
 $(document).ready(function (e) {
+  boatDataTable = $('#rowingBoat-list').DataTable({
+    ajax: {
+      url: 'api/boats',
+      dataSrc: '',
+    },
+    columnDefs: [
+      {
+        targets: [0],
+        visible: true,
+        pageLength: 25,
+        lengthMenu: [5, 10, 20, -1],
+      },
+    ],
+    columns: [
+      { data: 'id' },
+      { data: 'no' },
+      { data: 'type' },
+      { data: 'noOfSeats' },
+      { data: 'minPrice' },
+      { data: 'accPrice' },
+      { data: 'chargingTime' },
+      { data: 'status' },
+
+      {
+        data: null,
+        render: function (data, type, row) {
+          return '<td><a href="#"><button class="btn btn-danger" boatid="' + data.id + '">Delete</button></a></td>';
+        },
+      },
+      {
+        data: null,
+        render: function (data, type, row) {
+          return '<td><a href="#"> <button class="btn btn-info" boatid="' + data.id + '">Update</button></a></td>';
+        },
+      },
+    ],
+  });
+
   getAllBoats();
 
   // event on the body of the table for update button
   $('#rowingBoat-list').on('click', function (e) {
     if (e.target.className === 'btn btn-info') {
-      $('#updateModal').show();
       updated_boatId = e.target.parentNode.parentElement.parentElement.children[0].innerHTML;
-      var boatNo = e.target.parentNode.parentElement.parentElement.children[1].innerHTML;
+      var boat_no = e.target.parentNode.parentElement.parentElement.children[1].innerHTML;
       var seats = e.target.parentNode.parentElement.parentElement.children[3].innerHTML;
       var type = e.target.parentNode.parentElement.parentElement.children[2].innerHTML;
       var min_price = e.target.parentNode.parentElement.parentElement.children[4].innerHTML;
       var acc_price = e.target.parentNode.parentElement.parentElement.children[5].innerHTML;
       var chargingTime = e.target.parentNode.parentElement.parentElement.children[6].innerHTML;
 
-      $('#editboatNo').val(boatNo);
+      $('#editboatNo').val(boat_no);
       $('#editseats').val(seats);
       $('#editboatType').val(type);
       $('#editchargingTime').val(chargingTime);
       $('#editminPrice').val(min_price);
       $('#editaccPrice').val(acc_price);
+      $('#updateModal').show();
     }
+
+    if (e.target.className === 'btn btn-danger') {
+      deleted_boatId = e.target.parentNode.parentElement.parentElement.children[0].innerHTML;
+      $('#deletemodel').show();
+      e.preventDefault();
+    }
+  });
+
+  // event on delete modal
+  $('#deletecloseError').click(function (e) {
+    $('#deletemodel').hide();
+  });
+
+  $('#closeDeleteModal').click(function (e) {
+    $('#deletemodel').hide();
+  });
+
+  $('#yesDeleteModal').click(function (e) {
+    deleteboat();
+    $('#deletemodel').hide();
   });
   // events for success and error modal
   $('#closeError').click(function (e) {
@@ -116,29 +176,29 @@ $(document).ready(function (e) {
 
 // get all boats
 function getAllBoats() {
-  $.get('api/boats', function (rowingboat) {
-    $('#rowingBoat-list').empty();
-    for (var i = 0; i < rowingboat.length; i++) {
-      const list = document.getElementById('rowingBoat-list');
-      const row = document.createElement('tr');
-      row.innerHTML = `
-          <td>${rowingboat[i].id}</td>
-           <td>${rowingboat[i].no}</td>
-           <td>${rowingboat[i].type}</td>
-            <td>${rowingboat[i].noOfSeats}</td>
-             <td>${rowingboat[i].minPrice}</td>
-              <td>${rowingboat[i].accPrice}</td>
-              <td>${rowingboat[i].chargingTime}</td>
-              <td>${rowingboat[i].status}</td>
-              <td><a href="#"> <button class="btn btn-info" boatid="' + ${rowingboat[i].id} + '">Update Boat</button></a></td>
-              `;
-      list.appendChild(row);
-    }
-  });
+  boatDataTable.ajax.reload();
+  // $.get('api/boats', function (rowingboat) {
+  //   $('#rowingBoat-list').empty();
+  //   for (var i = 0; i < rowingboat.length; i++) {
+  //     const list = document.getElementById('rowingBoat-list');
+  //     const row = document.createElement('tr');
+  //     row.innerHTML = `
+  //         <td>${rowingboat[i].id}</td>
+  //          <td>${rowingboat[i].no}</td>
+  //          <td>${rowingboat[i].type}</td>
+  //           <td>${rowingboat[i].noOfSeats}</td>
+  //            <td>${rowingboat[i].minPrice}</td>
+  //             <td>${rowingboat[i].accPrice}</td>
+  //             <td>${rowingboat[i].chargingTime}</td>
+  //             <td>${rowingboat[i].status}</td>
+  //             <td><a href="#"> <button class="btn btn-info" boatid="' + ${rowingboat[i].id} + '">Update Boat</button></a></td>
+  //             `;
+  //     list.appendChild(row);
+  //   }
+  // });
 }
 
 // add a boat function
-
 function postBoat() {
   var min_price = Number($('#minPrice').val());
   var actual_price = Number($('#accPrice').val());
@@ -180,7 +240,7 @@ function updateBoat(updated_boatId) {
     actual_price = min_price;
   }
   var boat = {
-    id: updated_boatId,
+    id: Number(updated_boatId),
     no: $('#editboatNo').val(),
     noOfSeats: $('#editseats').val(),
     minPrice: Number($('#editminPrice').val()),
@@ -188,11 +248,11 @@ function updateBoat(updated_boatId) {
     chargingTime: Number($('#editchargingTime').val()),
     accPrice: actual_price,
   };
-
+  console.log(updated_boatId);
   var jsonObject = JSON.stringify(boat);
 
   $.ajax({
-    url: 'api/boats/' + updated_boatId,
+    url: 'api/boats/' + Number(updated_boatId),
     type: 'PUT',
     data: jsonObject,
     contentType: 'application/json',
@@ -213,6 +273,7 @@ function blockBoat(boatno) {
       var boat = {
         id: myboat.id,
         no: myboat.no,
+        type: myboat.type,
         noOfSeats: myboat.noOfSeats,
         minPrice: myboat.minPrice,
         chargingTime: myboat.chargingTime,
@@ -250,6 +311,7 @@ function unblockBoat(blockedId) {
       var boat = {
         id: myboat.id,
         no: myboat.no,
+        type: myboat.type,
         noOfSeats: myboat.noOfSeats,
         minPrice: myboat.minPrice,
         chargingTime: myboat.chargingTime,
@@ -277,6 +339,21 @@ function unblockBoat(blockedId) {
     } else {
       myAlert('No such Boat', 'error');
     }
+  });
+}
+
+// delete a  boat
+function deleteboat() {
+  $.ajax({
+    url: 'api/boats/' + Number(deleted_boatId),
+    type: 'DELETE',
+    success: function () {
+      myAlert('A boats has been deleted!', 'success');
+      getAllBoats();
+    },
+    error: function () {
+      myAlert('Sorry, Something wrong went on!', 'error');
+    },
   });
 }
 // function to clear the controls
@@ -313,29 +390,29 @@ function myAlert(msg, className) {
   }
 }
 
-// search box event
-function searchBoatNo() {
-  var input, filter, table, tr, td, i, txtValue;
-  input = document.getElementById('searchNo');
-  filter = input.value.toUpperCase();
-  table = document.getElementById('rowingBoat-list');
-  tr = table.getElementsByTagName('tr');
+// // search box event
+// function searchBoatNo() {
+//   var input, filter, table, tr, td, i, txtValue;
+//   input = document.getElementById('searchNo');
+//   filter = input.value.toUpperCase();
+//   table = document.getElementById('rowingBoat-list');
+//   tr = table.getElementsByTagName('tr');
 
-  // Loop through all table rows, and hide those who don't match the search query
+//   // Loop through all table rows, and hide those who don't match the search query
 
-  for (i = 0; i < tr.length; i++) {
-    tds = tr[i].getElementsByTagName('td');
-    var flag = false;
-    for (var j = 0; j < tds.length; j++) {
-      var td = tds[j];
-      if (td.innerText.toUpperCase().indexOf(filter) > -1) {
-        flag = true;
-      }
-    }
-    if (flag) {
-      tr[i].style.display = '';
-    } else {
-      tr[i].style.display = 'none';
-    }
-  }
-}
+//   for (i = 0; i < tr.length; i++) {
+//     tds = tr[i].getElementsByTagName('td');
+//     var flag = false;
+//     for (var j = 0; j < tds.length; j++) {
+//       var td = tds[j];
+//       if (td.innerText.toUpperCase().indexOf(filter) > -1) {
+//         flag = true;
+//       }
+//     }
+//     if (flag) {
+//       tr[i].style.display = '';
+//     } else {
+//       tr[i].style.display = 'none';
+//     }
+//   }
+// }

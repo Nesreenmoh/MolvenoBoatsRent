@@ -143,5 +143,19 @@ public class BoatControllerTest {
 
     }
 
+    // delete boat request test
+
+    @Test
+    public void deleteBoatRequestTest() throws Exception{
+        Boat boat1 = new Boat("1009", 4,"Rowing", 100.0, 200.0, 0 );
+        boat1.setId(13L);
+        boatService.addBoat(boat1);
+        when(boatService.deleteBoat(13L)).thenReturn("Deleted!");
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.delete("/api/boats/13")).andReturn();
+        int status = mvcResult.getResponse().getStatus();
+        assertEquals(200, status);
+        assertEquals("Deleted!", boatService.deleteBoat(13L));
+    }
+
 
 }

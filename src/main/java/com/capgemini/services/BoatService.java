@@ -87,6 +87,7 @@ public class BoatService {
 
     // update a boat data
     public void updateBoat(Boat boat) {
+
         boatRepository.save(boat);
     }
 
@@ -114,5 +115,12 @@ public class BoatService {
             total +=boats.get(i).getTotalTime();
         }
         return total;
+    }
+
+    // delete a boat
+
+    public String deleteBoat(Long id){
+        boatRepository.deleteById(id);
+        return "deleted!";
     }
 }

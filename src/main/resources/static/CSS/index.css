@@ -109,7 +109,7 @@ p {
   padding: 3rem 0;
 }
 .container {
-  max-width: 900px;
+  max-width: 1000px;
   margin-top: 2rem;
   border: 1px solid #008cba;
   overflow: hidden;
@@ -128,7 +128,8 @@ p {
 #addguestmodal,
 .CancelledList,
 #guestupdateModal,
-#confirm {
+#confirm,
+#deletemodel {
   display: none;
 }
 .guestData {
