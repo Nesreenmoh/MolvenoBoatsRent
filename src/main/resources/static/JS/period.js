@@ -91,12 +91,15 @@ $(document).ready(function () {
 
 // update guest data function
 function updatePeriod() {
-  console.log(period_id);
+  // formating the date
+  var date1 = $('#editStartDate').val().split('-').join('/');
+  var date2 = $('#editEndDate').val().split('-').join('/');
+
   var period = {
     id: period_id,
     name: $('#editname').val(),
-    startDate: $('#editStartDate').val(),
-    endDate: $('#editEndDate').val(),
+    startDate: date1,
+    endDate: date2,
     rate: $('#editrate').val(),
   };
 
@@ -124,10 +127,14 @@ function getAllPeriods() {
 
 // function to add period
 function addPeriod() {
+  //formating the date
+  var date1 = $('#startDate').val().split('-').join('/');
+  var date2 = $('#endDate').val().split('-').join('/');
+
   var period = {
     name: $('#periodName').val(),
-    startDate: $('#startDate').val(),
-    endDate: $('#editEndDate').val(),
+    startDate: date1,
+    endDate: date2,
     rate: $('#rate').val(),
   };
 

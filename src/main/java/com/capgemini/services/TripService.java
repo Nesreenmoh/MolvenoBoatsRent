@@ -84,6 +84,7 @@ public class TripService {
         // calculate the duration of this trip
         long diff = calculateDuration(trip);
         trip.setDuration(diff);
+        System.out.println(diff);
         trip.getBoats().setTotalTime(diff);
         //  check if the boat is electrical
 

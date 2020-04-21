@@ -61,7 +61,7 @@ public class InitializationData implements CommandLineRunner {
         boatRepository.save(boat8);
 
         Trip trip1 = new Trip(LocalDateTime.of(2020,04,21, 10,1,45,36912), "ongoing");
-        Trip trip2 = new Trip(LocalDateTime.of(2020,04,21, 11,1,45,36912), "ongoing");
+        Trip trip2 = new Trip(LocalDateTime.of(2020,04,21, 9,1,45,36912), "ongoing");
         List<Trip> trips1 = new ArrayList<>();
         List<Trip> trips2 = new ArrayList<>();
         tripRepository.save(trip1);

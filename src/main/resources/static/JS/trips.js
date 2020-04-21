@@ -327,6 +327,7 @@ function stopTrip() {
   }).responseJSON;
 
   // create trip object
+  console.log('start time is ' + start_time);
   var trip = {
     id: stop_trip_id,
     startTime: start_time,

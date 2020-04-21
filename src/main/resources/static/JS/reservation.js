@@ -43,10 +43,9 @@ $(document).ready(function (e) {
   // event on making a reservation
   $('#reservationbtn').click(function (e) {
     var valid = isValid($('#resDate').val());
-    if ($('#resTime').val() === '' || $('#duration').val() === '' || valid === false) {
+    if ($('#duration').val() === '' || valid === false) {
       myAlert('Please fill in the required data!', 'error');
     } else {
-      saveGuest();
       getBoatByNo();
     }
   });
@@ -86,31 +85,6 @@ $(document).ready(function (e) {
     loadAllReservation();
   });
 });
-
-// function add a guest
-function saveGuest() {
-  if ($('#guestName').val() === '' || $('#phone').val() === '') {
-    myAlert('Please Enter the required guest data', 'error');
-  } else {
-    var guest = {
-      name: $('#guestName').val(),
-      phone: $('#phone').val(),
-    };
-
-    var jsonObject = JSON.stringify(guest);
-    $.ajax({
-      url: 'api/guests/',
-      type: 'POST',
-      contentType: 'application/json',
-      data: jsonObject,
-      success: function (return_guest) {
-        loadAllGuest();
-        myAlert('Added successfully', 'success');
-        myguest = return_guest;
-      },
-    });
-  }
-}
 
 // function to load all guests to a select input
 function loadAllGuest() {
