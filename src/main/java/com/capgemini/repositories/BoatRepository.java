@@ -1,11 +1,10 @@
 package com.capgemini.repositories;
 
 import com.capgemini.models.Boat;
-import com.capgemini.models.BoatType;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-import java.util.List;
-
+@Repository
 public interface BoatRepository extends JpaRepository<Boat, Long> {
     Boat findOneById(Long id);
     Boat findOneByNo(String no);

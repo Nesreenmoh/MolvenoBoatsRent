@@ -1,7 +1,10 @@
 var myboats, myguest, res_id, guest_name, boat_no, res_date, res_start, res_end;
 $(document).ready(function (e) {
+  // load all boats by type
   loadAllBoatsByType($('#boatType').val());
+  // load all guests
   loadAllGuest();
+  // load all active reservations
   loadAllReservation();
   // setting events on the model buttons
   $('#closeError').click(function (e) {
@@ -46,7 +49,6 @@ $(document).ready(function (e) {
       saveGuest();
       getBoatByNo();
     }
-    // checkfields();
   });
 
   // events on the buttons of the cancel reservation model
@@ -105,7 +107,6 @@ function saveGuest() {
         loadAllGuest();
         myAlert('Added successfully', 'success');
         myguest = return_guest;
-        console.log('guest id is ' + myguest);
       },
     });
   }
@@ -196,6 +197,7 @@ function addReservation(boats) {
       maintenance: boats.maintenance,
       minPrice: boats.minPrice,
       accPrice: boats.accPrice,
+      available: boats.available,
       chargingTime: boats.chargingTime,
     },
   };
@@ -223,7 +225,6 @@ function addReservation(boats) {
 // function load all reservation
 function loadAllReservation() {
   $.get('api/reservations', function (reservations) {
-    console.log(reservations);
     $('.CancelledList').hide();
     $('.ReservationList').show();
     $('#reservation-list').empty();
@@ -273,6 +274,7 @@ function cancelReservation() {
             minPrice: boat.minPrice,
             accPrice: boat.accPrice,
             chargingTime: boat.chargingTime,
+            available: boat.available,
             status: 'Active',
           },
         };
@@ -298,8 +300,6 @@ function cancelReservation() {
 // function to load all cancelled reservation
 function loadCancelledReservation() {
   $.get('api/reservations/cancelled', function (reservations) {
-    const index = reservations.length;
-    console.log('cancelled List is ' + index);
     if (reservations.length > 0) {
       $('.ReservationList').hide();
       $('.CancelledList').show();

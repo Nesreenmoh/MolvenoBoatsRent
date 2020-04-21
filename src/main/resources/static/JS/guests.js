@@ -54,7 +54,6 @@ $(document).ready(function () {
   // add event when you click on edit icon
   $('#guestContainer').on('click', '.btn.btn-info', function () {
     guest_id = $(this).attr('guestid');
-    console.log(guest_id);
     var name = event.target.parentNode.parentElement.parentNode.children[1].innerHTML;
     var idType = event.target.parentNode.parentElement.parentNode.children[2].innerHTML;
     var idnumber = event.target.parentNode.parentElement.parentNode.children[3].innerHTML;
@@ -190,23 +189,6 @@ function deleteGuest() {
 }
 
 // show alert function
-
-function showAlert(msg, myclass) {
-  if (myclass === 'error') {
-    $('.modal-title').html('');
-    $('.modal-title').html('Error');
-    $('#error').show();
-    $('#message').text('');
-    $('#message').append(msg);
-  } else {
-    $('.modal-title').html('');
-    $('.modal-title').html('Success');
-    $('#message').text('');
-    $('#message').append(msg);
-    $('#error').show();
-  }
-}
-
 function myAlert(msg, className) {
   if (className === 'error') {
     $('.modal-title').html('');

@@ -1,7 +1,6 @@
 package com.capgemini.services;
 
 import com.capgemini.models.Boat;
-import com.capgemini.models.BoatType;
 import com.capgemini.models.Trip;
 import com.capgemini.repositories.BoatRepository;
 import com.capgemini.repositories.TripRepository;
@@ -91,9 +90,11 @@ public class BoatService {
         boatRepository.save(boat);
     }
 
+    // block a boat for maintenance
     public void updateBoatForMaintenance(Boat boat) {
         boat.setMaintenance(true);
         boat.setAvailable(false);
+        boat.setStatus("Maintenance");
         boatRepository.save(boat);
     }
 

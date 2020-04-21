@@ -114,6 +114,11 @@ p {
   border: 1px solid #008cba;
   overflow: hidden;
 }
+.photo-banner {
+  background: url(../CSS/myboat.jpg) no-repeat;
+  background-size: cover;
+  height: calc(100vh - 60px);
+}
 
 .text-center {
   text-align: center;
@@ -129,7 +134,9 @@ p {
 .CancelledList,
 #guestupdateModal,
 #confirm,
-#deletemodel {
+#deletemodel,
+#periodupdateModal,
+#deleteconfirm {
   display: none;
 }
 .guestData {

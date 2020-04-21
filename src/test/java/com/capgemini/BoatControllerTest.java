@@ -52,7 +52,7 @@ public class BoatControllerTest {
         mockMvc = MockMvcBuilders.standaloneSetup(boatController).build();
     }
 
-    // test get method in boat controller
+    // test get all boats request in the boat controller
     @Test
     public void boatFindAllTestMethod() throws Exception {
         Boat boat1 = new Boat("1009", 4,"Rowing", 100.0, 200.0, 0 );
@@ -122,6 +122,7 @@ public class BoatControllerTest {
 
     }
 
+    // test PUT request in the boat controller
     @Test
     public void BoatPutTestMethod() throws Exception {
         Boat boat1 = new Boat("1009", 4,"Rowing", 100.0, 200.0, 0 );
@@ -144,7 +145,6 @@ public class BoatControllerTest {
     }
 
     // delete boat request test
-
     @Test
     public void deleteBoatRequestTest() throws Exception{
         Boat boat1 = new Boat("1009", 4,"Rowing", 100.0, 200.0, 0 );

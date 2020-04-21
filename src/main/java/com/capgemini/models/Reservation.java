@@ -1,7 +1,7 @@
 package com.capgemini.models;
 
 import javax.persistence.*;
-import java.time.LocalDate;
+
 
 @Entity
 public class Reservation {

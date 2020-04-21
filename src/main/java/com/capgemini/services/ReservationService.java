@@ -1,6 +1,6 @@
 package com.capgemini.services;
 
-import com.capgemini.models.Boat;
+
 import com.capgemini.models.Reservation;
 import com.capgemini.repositories.BoatRepository;
 import com.capgemini.repositories.GuestRepository;
@@ -13,9 +13,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
-import java.time.Duration;
-import java.time.LocalDateTime;
-import java.time.temporal.Temporal;
 import java.util.*;
 
 @Transactional
@@ -31,7 +28,7 @@ public class ReservationService {
     @Autowired
     private GuestRepository guestRepository;
 
-    public int counter = 0;
+
 
     // add reservation controller
     public void addReservation(Reservation reservation) throws ParseException {
@@ -47,21 +44,11 @@ public class ReservationService {
         String startTime = new SimpleDateFormat("hh:mm a").format(date);
         String endTimeFormat = new SimpleDateFormat("hh:mm a").format(endTime);
 
-        //checking if the boat type is raft
-        if (reservation.getBoat().getType().equalsIgnoreCase("Raft")) {
-            counter++;
-            if (counter == 4) {
-                reservation.getBoat().setAvailable(true);
-                counter = 0;
-            }
-        }
-
-        System.out.println("counter is " + counter);
         // setting  a time to the reservation fields
         reservation.setRes_start_time(startTime);
         reservation.setRes_end_time(endTimeFormat);
         reservationTimer(reservation);
-        // reservation.getBoat().setStatus("Reserved");
+
 
         // saving the data in the repository
         boatRepository.save(reservation.getBoat());
@@ -76,7 +63,6 @@ public class ReservationService {
         String dataString = reservation.getResDate();
         SimpleDateFormat myFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
         Date date = myFormat.parse(dataString);
-        System.out.println("my parse date is " + date);
         //set a timer
         Timer myTimer = new Timer();
 

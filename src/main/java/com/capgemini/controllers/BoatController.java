@@ -1,7 +1,6 @@
 package com.capgemini.controllers;
 
 import com.capgemini.models.Boat;
-import com.capgemini.models.BoatType;
 import com.capgemini.models.Trip;
 import com.capgemini.services.BoatService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +16,7 @@ public class BoatController {
     @Autowired
     private BoatService boatService;
 
-    // request to get all boats
+    // request to get all boats and sort the by total time
     @GetMapping
     public List<Boat> findAllBoats() {
         List<Boat> boats = boatService.getAllBoats();
@@ -31,7 +30,7 @@ public class BoatController {
         return boatService.getTotalIncomeOfBoats();
     }
 
-    // request to get total income of all boats
+    // request to get total time used in all boats
     @GetMapping("/totalTime")
     public double getTotalTime(){
         return boatService.getTotalTimeOfBoats();
@@ -85,9 +84,11 @@ public class BoatController {
     // request for updating fields of a boat
     @PutMapping("/{boatId}")
     public void updateBoat(@RequestBody Boat boat, @PathVariable Long boatId){
+
         boatService.updateBoat(boat);
     }
 
+    // request to delete a boat
     @DeleteMapping("/{id}")
     public String deleteBoat(@PathVariable Long id){
         boatService.deleteBoat(id);

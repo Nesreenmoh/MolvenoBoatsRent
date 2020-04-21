@@ -1,11 +1,9 @@
 package com.capgemini.bootstrap;
 
-import com.capgemini.models.Boat;
-import com.capgemini.models.BoatType;
-import com.capgemini.models.Guest;
-import com.capgemini.models.Trip;
+import com.capgemini.models.*;
 import com.capgemini.repositories.BoatRepository;
 import com.capgemini.repositories.GuestRepository;
+import com.capgemini.repositories.PeriodRepository;
 import com.capgemini.repositories.TripRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -20,11 +18,13 @@ public class InitializationData implements CommandLineRunner {
     private final BoatRepository boatRepository;
     private final TripRepository tripRepository;
     private final GuestRepository guestRepository;
+    private final PeriodRepository periodRepository;
 
-    public InitializationData(BoatRepository boatRepository, TripRepository tripRepository, GuestRepository guestRepository) {
+    public InitializationData(BoatRepository boatRepository, TripRepository tripRepository, GuestRepository guestRepository, PeriodRepository periodRepository) {
         this.boatRepository = boatRepository;
         this.tripRepository = tripRepository;
         this.guestRepository = guestRepository;
+        this.periodRepository = periodRepository;
     }
 
     @Override
@@ -39,7 +39,9 @@ public class InitializationData implements CommandLineRunner {
 
 
         Boat boat1 = new Boat("1001", 2, "Rowing", 100.0, 200.0, 0);
-        Boat boat2 = new Boat("1002", 2, "Rowing", 100.0, 200.0, 0);
+        boat1.setAvailable(false);
+        Boat boat2 = new Boat("1002", 2, "Rowing", 100.0, 100.0, 0);
+        boat2.setAvailable(false);
         Boat boat3 = new Boat("1003", 6, "Rowing", 100.0, 400.0, 0);
         Boat boat4 = new Boat("1004", 6, "Electrical", 100.0, 400.0, 2);
         Boat boat5 = new Boat("1005", 8, "Electrical", 100.0, 400.0,1 );
@@ -58,8 +60,8 @@ public class InitializationData implements CommandLineRunner {
         boatRepository.save(boat7);
         boatRepository.save(boat8);
 
-        Trip trip1 = new Trip(LocalDateTime.of(2020,04,15, 5,1,45,36912), "ongoing");
-        Trip trip2 = new Trip(LocalDateTime.of(2020,04,11, 7,1,45,36912), "ongoing");
+        Trip trip1 = new Trip(LocalDateTime.of(2020,04,21, 10,1,45,36912), "ongoing");
+        Trip trip2 = new Trip(LocalDateTime.of(2020,04,21, 11,1,45,36912), "ongoing");
         List<Trip> trips1 = new ArrayList<>();
         List<Trip> trips2 = new ArrayList<>();
         tripRepository.save(trip1);
@@ -86,6 +88,10 @@ public class InitializationData implements CommandLineRunner {
         guestRepository.save(guest1);
         guestRepository.save(guest2);
 
+        Season_Period period1 = new Season_Period( "Low Season", "01/01/2020", "06/01/2020", 5);
+        Season_Period period2 = new Season_Period( "High Season", "06/01/2020", "31/12/2020", 10);
+        periodRepository.save(period1);
+        periodRepository.save(period2);
 
     }
 }

@@ -7,16 +7,17 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css" />
     <link rel="stylesheet" href="CSS/index.css " />
 
-    <title>Guest page</title>
+    <title>Seasons Period page</title>
   </head>
+
   <body>
     <!-- Delete Alert Modal section -->
-    <div id="confirm" class="modal" tabindex="-1" role="dialog">
+    <div id="deleteconfirm" class="modal">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title">Warning</h5>
-            <button type="button" class="closeBtn" data-dismiss="modal" aria-label="Close">
+            <button type="button" class="deletecloseBtn" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
@@ -34,68 +35,43 @@
         </div>
       </div>
     </div>
+
     <!--  Update modal -->
-    <div id="guestupdateModal" class="modal">
+    <div id="periodupdateModal" class="modal">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header" style="background-color: #138496;">
-            <h5 class="title">Update Guest Data</h5>
-            <button type="button" id="updateClose" class="close" data-dismiss="modal" aria-label="Close">
+            <h5 class="title">Update Period Data</h5>
+            <button type="button" id="updateperiodClose" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
           <div class="modal-body">
             <form>
               <div class="form-group">
-                <label for="guestFirstNamelable"> Name </label>
-                <input type="text" class="form-control" id="editName" placeholder="First Name" required />
+                <label for=""> Name </label>
+                <input type="text" class="form-control" id="editname" placeholder="Period Name" required />
               </div>
               <div class="form-group">
-                <label for=""> ID Type </label>
-                <select name="" id="editidType">
-                  <option value="ID"> ID </option>
-                  <option value="DrivingLicense"> Driving License </option>
-                  <option value="Passport"> Passport </option>
-                </select>
+                <label for=""> Start Date </label>
+                <input type="date" class="form-control" id="editStartDate" placeholder=" Start Date" required />
               </div>
               <div class="form-group">
-                <label for=""> ID number </label>
-                <input type="text" class="form-control" id="editidNumer" placeholder="ID number" required />
+                <label for=""> End Date </label>
+                <input type="date" class="form-control" id="editEndDate" placeholder=" End Date" required />
               </div>
               <div class="form-group">
-                <label for=""> Phone </label>
-                <input type="text" class="form-control" id="editphone" placeholder=" Guest Phone" required />
+                <label for=""> Rate % </label>
+                <input type="text" class="form-control" id="editrate" placeholder=" Rate %" required />
               </div>
             </form>
           </div>
           <div class="modal-footer">
-            <button type="button" id="save" class="btn btn-primary">
+            <button type="button" id="editperiodsave" class="btn btn-primary">
               Save
             </button>
-            <button type="button" id="closeSmallbtn" class="btn btn-secondary">
+            <button type="button" id="editcloseSmallbtn" class="btn btn-secondary">
               Close
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Error/Success Modal Messages -->
-    <div id="error" class="modal" tabindex="-1" role="dialog">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title">Warning</h5>
-            <button type="button" id="closeError" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            <p id="message"></p>
-          </div>
-          <div class="modal-footer">
-            <button type="button" id="closeOK" class="btn btn-secondary" data-dismiss="modal">
-              OK
             </button>
           </div>
         </div>
@@ -122,49 +98,46 @@
         </li>
       </ul>
     </nav>
-    <!-- Main container -->
+
+    <!-- main container -->
     <div class="container">
-      <h2 style="text-align: center;">Guest Data</h2>
+      <h2 style="text-align: center;">Seasons Periods Data</h2>
       <div class="row">
         <div class="col-md-12">
           <form>
             <div class="form-group">
-              <label for="guestFirstNamelable"> Name </label>
-              <input type="text" class="form-control" id="guestName" placeholder="Name" required />
+              <label for=""> Period Name </label>
+              <input type="text" class="form-control" id="periodName" placeholder="Period Name" required />
             </div>
             <div class="form-group">
-              <label for=""> ID Type </label>
-              <select name="" id="idType">
-                <option value="ID"> ID </option>
-                <option value="DrivingLicense"> Driving License </option>
-                <option value="Passport"> Passport </option>
-              </select>
+              <label for=""> Start Date </label>
+              <input type="date" class="form-control" id="startDate" placeholder="Start Date " required />
             </div>
             <div class="form-group">
-              <label for=""> ID number </label>
-              <input type="text" class="form-control" id="idNumer" placeholder="ID number" required />
+              <label for=""> End Date </label>
+              <input type="date" class="form-control" id="endDate" placeholder=" End Date" required />
             </div>
             <div class="form-group">
-              <label for=""> Phone </label>
-              <input type="text" class="form-control" id="phone" placeholder=" Guest Phone" required />
+              <label for=""> Rate </label>
+              <input type="number" class="form-control" id="rate" placeholder=" rate %" required />
             </div>
             <div class="form-group">
-              <button type="button" id="addGuest" class="btn btn-info">
-                Add Guest
+              <button type="button" id="addperiodbtn" class="btn btn-info">
+                Add Period
               </button>
             </div>
           </form>
         </div>
         <!-- data container -->
         <div class="col-md-12">
-          <table id="guestContainer" class="table table-bordered table-striped table-hover">
+          <table id="periodsContainer" class="table table-bordered table-striped table-hover">
             <thead>
               <tr class="table-primary">
                 <th>ID</th>
                 <th>Name</th>
-                <th>ID Type</th>
-                <th>ID Number</th>
-                <th>Telephone</th>
+                <th>Start Date</th>
+                <th>End Date</th>
+                <th>Rate %</th>
                 <th>Delete</th>
                 <th>Update</th>
               </tr>
@@ -178,6 +151,6 @@
     <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
     <script src="https://kit.fontawesome.com/a076d05399.js"></script>
 
-    <script src="JS/guests.js"></script>
+    <script src="JS/period.js"></script>
   </body>
 </html>

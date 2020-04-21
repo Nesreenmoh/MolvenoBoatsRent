@@ -10,15 +10,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
-import javax.swing.*;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.Timer;
-import java.util.stream.Collectors;
+
 
 @Service
 @Transactional
@@ -32,7 +29,7 @@ public class TripService {
     @Autowired
     private GuestRepository guestRepository;
 
-    Boat boat;
+
 
     // add trip
     public Trip addTrip(Trip trip) {
@@ -89,19 +86,22 @@ public class TripService {
         trip.setDuration(diff);
         trip.getBoats().setTotalTime(diff);
         //  check if the boat is electrical
-        Boolean state;
+
         if (trip.getBoats().getType().equalsIgnoreCase("electrical")) {
             if (trip.getBoats().getStatus().equalsIgnoreCase("Reserved")) {
                 trip.getBoats().setAvailable(false);
-                updateElectricalReservedBoat(trip.getBoats(), diff);
+                trip.getBoats().setStatus("Charging");
+                updateElectricalReservedBoat(trip.getBoats());
             } else {
                 trip.getBoats().setAvailable(false);
+                trip.getBoats().setStatus("Charging");
                 updateElectricalBoat(trip.getBoats());
             }
 
         } else if (trip.getBoats().getStatus().equalsIgnoreCase("Reserved")) {
             trip.getBoats().setAvailable(false);
-            updateReservedBoats(trip.getBoats(), diff);
+            trip.getBoats().setStatus("Not Active");
+            updateReservedBoats(trip.getBoats());
 
         } else {
             trip.getBoats().setAvailable(true);
@@ -123,7 +123,6 @@ public class TripService {
         LocalDateTime date2 = trip.getStartTime();
         Duration period = Duration.between(date1, date2);
         long diff = Math.abs(period.toHours());
-        System.out.println("The diff is " + diff);
         return diff;
     }
 
@@ -141,7 +140,7 @@ public class TripService {
     }
 
     //update electrical reserved boat after the trip is done
-    public void updateElectricalReservedBoat(Boat boat, Long duration) {
+    public void updateElectricalReservedBoat(Boat boat) {
         int chargingTime = boat.getChargingTime();
         Timer myTimer = new Timer();
         myTimer.schedule(new TimerTask() {
@@ -152,11 +151,11 @@ public class TripService {
                 boatRepository.save(boat);
 
             }// run this function after a charging time of the boat in millieseconds
-        }, ((chargingTime + duration +1 ) * 3600000));
+        }, ((chargingTime  +1 ) * 3600000));
     }
 
     // update reserved boat after the trip
-    public void updateReservedBoats(Boat boat, Long duration){
+    public void updateReservedBoats(Boat boat){
         Timer myTimer = new Timer();
         myTimer.schedule(new TimerTask() {
             @Override
@@ -166,13 +165,12 @@ public class TripService {
                 boatRepository.save(boat);
 
             }// run this function after a charging time of the boat in millieseconds
-        }, ((duration +1 ) * 3600000));
+        }, (1  * 3600000));
     }
 
     // update electrical boat and set the availability after the charging time
     public void updateElectricalBoat(Boat boat) {
         int chargingTime = boat.getChargingTime();
-        System.out.println(chargingTime);
         // define a time to set a current time + charging time to change the availability to true
         Timer myTimer = new Timer();
 
@@ -180,7 +178,7 @@ public class TripService {
             @Override
             public void run() {
                 boat.setAvailable(true);
-                boat.setStatus("Charging");
+                boat.setStatus("Active");
                 boatRepository.save(boat);
 
             }// run this function after a charging time of the boat in millieseconds
@@ -205,7 +203,6 @@ public class TripService {
                 usedBoats.add(trips.get(i).getBoats());
             }
         }
-        System.out.println("Used boats for all trips " + usedBoats);
         return usedBoats;
     }
 

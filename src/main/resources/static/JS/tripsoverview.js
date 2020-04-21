@@ -3,7 +3,17 @@ var totalIncome = 0,
   total_duration = 0,
   average_duration = 0,
   str = '';
+var tripssDataTable;
 $(document).ready(function () {
+  // defining the data table
+  tripssDataTable = $('#trips-list').DataTable({
+    ajax: {
+      url: 'api/trips',
+      dataSrc: '',
+    },
+    columns: [{ data: 'startTime' }, { data: 'endTime' }, { data: 'status' }, { data: 'duration' }, { data: 'boats.no' }],
+  });
+
   // fetching the data from database by ajax
   totalIncome = $.ajax({
     url: 'api/trips/totalincome',
@@ -38,12 +48,6 @@ $(document).ready(function () {
   } else {
     average_duration = 0;
   }
-  // console.length("duration "+ )
-  console.log('Total income is  ' + totalIncome);
-  console.log('Number of used boats is  ' + used_boats.length);
-  console.log('Number of ongoing trips  ' + ongoing_trips.length);
-  console.log('Number of ended trips  ' + ended_trips.length);
-  console.log('The average duration is ' + average_duration);
   str +=
     '<b> Number of Trips Ended:  </b>' +
     ended_trips.length +
@@ -66,27 +70,5 @@ $(document).ready(function () {
 });
 
 function getAllTripsOfToday() {
-  var income = 0;
-  var endtime = '';
-  $.get('/api/trips', function (trips) {
-    for (var i = 0; i < trips.length; i++) {
-      income = `${trips[i].boats.income}`;
-      if (`${trips[i].status}` === 'ongoing') {
-        endtime = 'Not Yet';
-      } else {
-        endtime = `${trips[i].endTime}`;
-      }
-      const list = document.getElementById('trips-list');
-      const row = document.createElement('tr');
-      row.innerHTML = `
-           <td>${trips[i].startTime}</td>
-           <td>${endtime}</td>
-            <td>${trips[i].status}</td>
-           <td>${trips[i].duration}</td>
-             <td>${trips[i].boats.no}</td>
-              `;
-      list.appendChild(row);
-    }
-  });
-  console.log(income);
+  tripssDataTable.ajax.reload();
 }

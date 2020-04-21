@@ -34,7 +34,7 @@
               <div class="form-group">
                 <label for=""> Boat Type </label>
                 <select name="" id="editboatType">
-                  <option value="rowing"> Rowing </option>
+                  <option value="Rowing" selected> Rowing </option>
                   <option value="Electrical"> Electrical </option>
                   <option value="Raft"> Raft </option>
                 </select>
@@ -65,7 +65,7 @@
       </div>
     </div>
     <!-- Error/Success Modal Messages -->
-    <div id="error" class="modal" tabindex="-1" role="dialog">
+    <div id="error" class="modal">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
@@ -87,7 +87,7 @@
     </div>
 
     <!-- Block for maintenance Modal Message -->
-    <div id="blockmodel" class="modal" tabindex="-1" role="dialog">
+    <div id="blockmodel" class="modal">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
@@ -112,12 +112,12 @@
     </div>
 
     <!-- unblock a boat from maintenance  -->
-    <div id="unblockmodel" class="modal" tabindex="-1" role="dialog">
+    <div id="unblockmodel" class="modal">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title">Warning</h5>
-            <button type="button" id="blockcloseError" class="close" data-dismiss="modal" aria-label="Close">
+            <button type="button" id="unblockcloseError" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
@@ -136,7 +136,7 @@
       </div>
     </div>
 
-     <!-- unblock a boat from maintenance  -->
+     <!-- delete a boat modal  -->
     <div id="deletemodel" class="modal">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -170,7 +170,8 @@
         <li><a href="reservation.html">Reservation</a></li>
         <li><a href="trip.html">Trip</a></li>
         <li><a href="boats.html">Boat</a></li>
-         <li><a href="guests.html">Guest</a></li>
+        <li><a href="guests.html">Guest</a></li>
+        <li><a href="period.html">Period</a></li>
         <li>
           <a href="#">Overview</a>
           <ul class="inside">
@@ -229,10 +230,7 @@
       </div>
         <!-- table of the boats data -->
         <div class="BoatsData">
-          <!-- <div class="form-group" style="display: inline-block;">
-            <label for="">Search(Boat No.) </label>
-            <input type="text" class="form-control" id="searchNo" placeholder="Boat Number" required />
-          </div> -->
+         
           <h4>Boats Data</h4>
           <table id="rowingBoat-list" class="table table-bordered table-striped table-hover">
             <thead>
@@ -249,7 +247,6 @@
                 <th>Update</th>
               </tr>
             </thead>
-            <!-- <tbody ></tbody> -->
           </table>
         </div>
       </div>

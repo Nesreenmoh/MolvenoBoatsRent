@@ -75,6 +75,7 @@ public class TripControllerTest {
         verify(tripService,times(1)).findAllTrips();
     }
 
+   // test get all ended trips method in the trip controller
     @Test
     public void getEndedTripTestMethod() throws Exception {
         Trip trip1 = new Trip(LocalDateTime.of(2020,04,15, 5,1,45,36912), "ended");
@@ -99,6 +100,7 @@ public class TripControllerTest {
         verify(tripService,times(1)).findAllEndedTrips();
     }
 
+    // test post request of the trip
     @Test
     public void postTripTestMethod() throws Exception {
         Trip trip1 = new Trip();

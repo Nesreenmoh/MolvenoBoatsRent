@@ -2,6 +2,7 @@ var updated_boatId;
 var boatDataTable;
 var deleted_boatId;
 $(document).ready(function (e) {
+  // define data table
   boatDataTable = $('#rowingBoat-list').DataTable({
     ajax: {
       url: 'api/boats',
@@ -59,11 +60,17 @@ $(document).ready(function (e) {
       $('#editchargingTime').val(chargingTime);
       $('#editminPrice').val(min_price);
       $('#editaccPrice').val(acc_price);
+      $('.modal-title').html('');
+      $('.modal-title').html('Boat Update');
+      $('.modal-header').css('background-color', 'rosybrown');
       $('#updateModal').show();
     }
 
     if (e.target.className === 'btn btn-danger') {
       deleted_boatId = e.target.parentNode.parentElement.parentElement.children[0].innerHTML;
+      $('.modal-title').html('');
+      $('.modal-title').html('Warning');
+      $('.modal-header').css('background-color', 'orange');
       $('#deletemodel').show();
       e.preventDefault();
     }
@@ -107,10 +114,10 @@ $(document).ready(function (e) {
   // event on the block for maintenance model
   $('#blockcloseError').click(function (e) {
     $('#blockmodel').hide();
-    $('#unblockmodel').hide();
   });
   $('#blockOk').click(function (e) {
     if ($('#blockboatNo').val() === '') {
+      $('#blockmodel').hide();
       myAlert('Please enter Boat number to block it!', 'error');
     } else {
       blockBoat($('#blockboatNo').val());
@@ -120,6 +127,7 @@ $(document).ready(function (e) {
   // event on unblock modal buttons
   $('#unblockOk').click(function (e) {
     if ($('#unblockboatNo').val() === '') {
+      $('#unblockmodel').hide();
       myAlert('Please enter Boat number to unblock it!', 'error');
     } else {
       unblockBoat($('#unblockboatNo').val());
@@ -130,6 +138,10 @@ $(document).ready(function (e) {
     $('.modal-title').html('Info');
     $('.modal-header').css('background-color', 'orange');
     $('#unblockmodel').show();
+  });
+
+  $('#unblockcloseError').click(function () {
+    $('#unblockmodel').hide();
   });
   // event on the button for block a boat
   $('#blockBoatbtn').click(function (e) {
@@ -167,45 +179,23 @@ $(document).ready(function (e) {
       $('#editminPrice').attr('disabled', false);
     }
   });
-
-  // search box event
-  $('#searchNo').on('keyup', function (e) {
-    searchBoatNo();
-  });
 });
 
 // get all boats
 function getAllBoats() {
   boatDataTable.ajax.reload();
-  // $.get('api/boats', function (rowingboat) {
-  //   $('#rowingBoat-list').empty();
-  //   for (var i = 0; i < rowingboat.length; i++) {
-  //     const list = document.getElementById('rowingBoat-list');
-  //     const row = document.createElement('tr');
-  //     row.innerHTML = `
-  //         <td>${rowingboat[i].id}</td>
-  //          <td>${rowingboat[i].no}</td>
-  //          <td>${rowingboat[i].type}</td>
-  //           <td>${rowingboat[i].noOfSeats}</td>
-  //            <td>${rowingboat[i].minPrice}</td>
-  //             <td>${rowingboat[i].accPrice}</td>
-  //             <td>${rowingboat[i].chargingTime}</td>
-  //             <td>${rowingboat[i].status}</td>
-  //             <td><a href="#"> <button class="btn btn-info" boatid="' + ${rowingboat[i].id} + '">Update Boat</button></a></td>
-  //             `;
-  //     list.appendChild(row);
-  //   }
-  // });
 }
 
 // add a boat function
 function postBoat() {
+  // checking if there is no actual price set, so make the actual price equal to the minimum price
   var min_price = Number($('#minPrice').val());
   var actual_price = Number($('#accPrice').val());
   if (actual_price === 0) {
     actual_price = min_price;
   }
-  console.log('Actual price is= ' + actual_price);
+
+  // defining a variable boat object
   var rowingboat = {
     no: $('#boatNo').val(),
     noOfSeats: $('#seats').val(),
@@ -248,7 +238,7 @@ function updateBoat(updated_boatId) {
     chargingTime: Number($('#editchargingTime').val()),
     accPrice: actual_price,
   };
-  console.log(updated_boatId);
+
   var jsonObject = JSON.stringify(boat);
 
   $.ajax({
@@ -389,30 +379,3 @@ function myAlert(msg, className) {
     $('#error').show();
   }
 }
-
-// // search box event
-// function searchBoatNo() {
-//   var input, filter, table, tr, td, i, txtValue;
-//   input = document.getElementById('searchNo');
-//   filter = input.value.toUpperCase();
-//   table = document.getElementById('rowingBoat-list');
-//   tr = table.getElementsByTagName('tr');
-
-//   // Loop through all table rows, and hide those who don't match the search query
-
-//   for (i = 0; i < tr.length; i++) {
-//     tds = tr[i].getElementsByTagName('td');
-//     var flag = false;
-//     for (var j = 0; j < tds.length; j++) {
-//       var td = tds[j];
-//       if (td.innerText.toUpperCase().indexOf(filter) > -1) {
-//         flag = true;
-//       }
-//     }
-//     if (flag) {
-//       tr[i].style.display = '';
-//     } else {
-//       tr[i].style.display = 'none';
-//     }
-//   }
-// }

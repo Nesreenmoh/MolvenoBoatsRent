@@ -20,7 +20,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -56,6 +55,7 @@ public class GuestControllerTest {
         mockMvc = MockMvcBuilders.standaloneSetup(guestController).build();
     }
 
+    // test Post guest request in guest controller
     @Test
     public void addGuestsTestMethod() throws Exception {
 
@@ -75,6 +75,7 @@ public class GuestControllerTest {
                 .andExpect(status().isOk());
     }
 
+    // test get all guests in guest controller
     @Test
     public void getAllGuestsTestMethod() throws Exception {
         Guest guest1 = new Guest("Mohammed", "ID", "53453463","12345" );
@@ -97,7 +98,7 @@ public class GuestControllerTest {
     }
 
 
-    // test update Guest
+    // test update Guest request in guest controller
     @Test
     public void updateGuestTest() throws Exception {
         Guest guest1 = new Guest("Mohammed", "ID", "53453463","12345" );
@@ -118,8 +119,7 @@ public class GuestControllerTest {
         assertEquals(200, status);
     }
 
-    // delete  guest request test
-
+    //test a delete  guest request in guest controller
     @Test
     public void deleteGuestRequestTest() throws Exception{
         Guest guest1 = new Guest("Mohammed", "ID", "53453463","12345" );

@@ -1,7 +1,17 @@
 var total_time = 0,
   total_income = 0,
   str = '';
+var boatsDataTable;
 $(document).ready(function () {
+  // datatable of the boats
+  boatsDataTable = $('#boats-list').DataTable({
+    ajax: {
+      url: 'api/boats',
+      dataSrc: '',
+    },
+    columns: [{ data: 'no' }, { data: 'noOfSeats' }, { data: 'type' }, { data: 'totalTime' }, { data: 'income' }],
+  });
+
   // fetching the data from database by ajax
   total_income = $.ajax({
     url: 'api/trips/totalincome',
@@ -15,8 +25,7 @@ $(document).ready(function () {
     dataType: 'json',
   }).responseJSON;
 
-  console.log('Total Time  ' + total_time);
-  console.log('Total income  ' + total_income);
+  // add the details of the boats to a paragraph
 
   str += '<b> Total time:  </b>' + total_time + '</br>' + '<b> Total income:  </b>' + total_income + '</br>';
   $('#total').val('');
@@ -24,19 +33,7 @@ $(document).ready(function () {
   getAllBoatsOf();
 });
 
+// fetch all boats
 function getAllBoatsOf() {
-  $.get('/api/boats', function (boats) {
-    for (var i = 0; i < boats.length; i++) {
-      const list = document.getElementById('boats-list');
-      const row = document.createElement('tr');
-      row.innerHTML = `
-           <td>${boats[i].no}</td>
-            <td>${boats[i].noOfSeats}</td>
-             <td>${boats[i].type}</td>
-           <td>${boats[i].totalTime}</td>
-             <td>${boats[i].income}</td>
-              `;
-      list.appendChild(row);
-    }
-  });
+  boatsDataTable.ajax.reload();
 }

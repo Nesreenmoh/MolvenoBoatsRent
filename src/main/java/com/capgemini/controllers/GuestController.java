@@ -26,23 +26,27 @@ public class GuestController {
         return guestService.findOneGuest(id);
     }
 
+    // request to get a guest by name
     @GetMapping("/name/{name}")
     public Guest getOneByname(@PathVariable String name) {
 
         return guestService.findOneByName(name);
     }
 
+    // request to add a guest
     @PostMapping
     public Guest addGuest(@RequestBody Guest guest) {
 
         return guestService.addGuest(guest);
     }
 
+    // request to update a guest
     @PutMapping("/{id}")
     public void updateGuest(@RequestBody Guest guest, @PathVariable Long id) {
         guestService.updateGuest(guest, id);
     }
 
+    // request to delete a guest
     @DeleteMapping("/{id}")
     public String deleteGuest(@PathVariable Long id) {
        return guestService.deleteGuest(id);

@@ -1,7 +1,24 @@
-var stop_trip_id, stop_boat_No, stop_type, stopped_guest, start_time, guestname;
+var stop_trip_id,
+  stop_boat_No,
+  stop_type,
+  stopped_guest,
+  start_time,
+  guestname,
+  periodTime = 0;
 $(document).ready(function () {
+  // fetch the period data
+  periodTime = $.ajax({
+    url: 'api/periods',
+    async: false,
+    dataType: 'json',
+  }).responseJSON;
+
+  //  fetch all on going trips
   getAllOngoingTrips();
+  // load all the guests
   loadAllGuest();
+
+  // event on the check for suitable boats
   $('#checkbtn').on('click', function (e) {
     if ($('#noOfPersons').val() === '') {
       myAlert('Please Enter a number of persons', 'error');
@@ -83,6 +100,9 @@ $(document).ready(function () {
 
   //event on the check Reserved Trips button
   $('#checkReservedbtn').click(function (e) {
+    $('.modal-title').html('');
+    $('.modal-title').html('Reserved Boats');
+    $('.modal-header').css('background-color', 'orange');
     $('#reservedBoats').show();
   });
 
@@ -104,23 +124,20 @@ $(document).ready(function () {
 
 // function to check for suitable boats
 function checkforSuitableBoats() {
-  var max = 4;
   var returned_boats = '';
   $.get('api/boats/' + Number($('#noOfPersons').val()) + '/' + $('#boatType').val(), function (suitableBoats) {
     console.log(suitableBoats);
     if (suitableBoats.length > 0) {
-      if (suitableBoats.length < max) {
-        for (var i = 0; i < suitableBoats.length; i++) {
-          returned_boats +=
-            '<option value ="' +
-            suitableBoats[i].no +
-            '"> Boat No. ' +
-            suitableBoats[i].no +
-            ' with ' +
-            suitableBoats[i].noOfSeats +
-            ' seats </option>';
-          $('#Boats').html(returned_boats);
-        }
+      for (var i = 0; i < suitableBoats.length; i++) {
+        returned_boats +=
+          '<option value ="' +
+          suitableBoats[i].no +
+          '"> Boat No. ' +
+          suitableBoats[i].no +
+          ' with ' +
+          suitableBoats[i].noOfSeats +
+          ' seats </option>';
+        $('#Boats').html(returned_boats);
       }
     } else {
       myAlert('No suitable boats available at this time!', 'warning');
@@ -191,7 +208,6 @@ function addReservedTrip() {
     async: false,
     dataType: 'json',
   }).responseJSON;
-  console.log('guest id is' + myguest.id);
 
   // get the boat  data
   myboat = $.ajax({
@@ -199,7 +215,6 @@ function addReservedTrip() {
     async: false,
     dataType: 'json',
   }).responseJSON;
-  console.log('Myboat id is' + myboat.id);
 
   // create a trip object
   var trip = {
@@ -275,6 +290,28 @@ function getDurationandPrice(trip) {
 }
 // function to stop a trip
 function stopTrip() {
+  var rate = 0;
+  // check the date that the trip start so we calculate the price according to the seasons rate
+  // get today date
+  const date = new Date();
+  let D3 = `${date.getMonth()}\/${date.getDate()}\/${date.getFullYear()}`;
+
+  for (var i = 0; i < periodTime.length; i++) {
+    // Format - MM/DD/YYYY
+    var D1 = periodTime[i].startDate;
+    var D2 = periodTime[i].endDate;
+
+    D1 = new Date(D1);
+    D2 = new Date(D2);
+    D3 = new Date(D3);
+    if (D3.getTime() <= D2.getTime() && D3.getTime() >= D1.getTime()) {
+      rate = periodTime[i].rate / 100;
+      break;
+    } else {
+      rate = 0;
+    }
+  }
+
   // get the boat  data
   stopped_boat = $.ajax({
     url: 'api/boats/boat/' + stop_boat_No,
@@ -308,7 +345,7 @@ function stopTrip() {
       type: stopped_boat.type,
       maintenance: stopped_boat.maintenance,
       minPrice: stopped_boat.minPrice,
-      accPrice: stopped_boat.accPrice,
+      accPrice: stopped_boat.accPrice + stopped_boat.accPrice * rate, // adding the rate of the season to the acctual price of the trip
       chargingTime: stopped_boat.chargingTime,
       status: stopped_boat.status,
     },
